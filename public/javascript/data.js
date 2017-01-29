@@ -154,6 +154,7 @@ function DataService($http, $q) {
 			this.hasBlueprint = !!data.hasBlueprint;
 			this.ducats = data.ducats || 0;
 			this.requirements = data.requirements || [];
+			this.icon = data.icon || "";
 			if(data._id){
 				this._id = data._id;
 				this.index();
@@ -164,6 +165,7 @@ function DataService($http, $q) {
 			this.hasBlueprint = false;
 			this.ducats = 0;
 			this.requirements = [];
+			this.icon = "";
 		}
 		this.primes = [];
 		this.relics = [];
@@ -193,6 +195,8 @@ function DataService($http, $q) {
 			data.requirements = this.requirements;
 		if(this._id)
 			data._id = this._id;
+		if(this.icon)
+			data.icon = this.icon;
 		return data;
 	}
 	

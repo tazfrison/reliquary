@@ -68,7 +68,7 @@ angular.module("admin", ["data"])
 					$scope.relic = new DataService.Relic();
 				}
 			},
-			templateUrl: "newRelic.template.html"
+			templateUrl: "/templates/newRelic.template.html"
 		};
 	}])
 	
@@ -79,6 +79,18 @@ angular.module("admin", ["data"])
 			controller: function($scope, DataService, $q) {
 				//Presets
 				$scope.presets = ["Warframe", "Rifle/Shotgun", "Pistol/Sidearm", "Bow"];
+				$scope.icons = [
+					"barrel",
+					"receiver",
+					"stock",
+					"neuroptics",
+					"systems",
+					"chassis",
+					"blade",
+					"handle",
+					"link",
+					"grip"
+				]
 				
 				$scope.preset = {
 					name: "",
@@ -209,6 +221,6 @@ angular.module("admin", ["data"])
 						$scope.part = new DataService.Part();
 				}
 			},
-			templateUrl: "newPrime.template.html"
+			templateUrl: "/templates/newPrime.template.html"
 		};
 	}])

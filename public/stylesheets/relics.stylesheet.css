@@ -51,8 +51,24 @@ relics .nav>li.active>a{
 	cursor: pointer;
 }
 
+.relic:hover{
+	border-color: #AAAA22;
+}
+
+.relic:hover>.title{
+	background-color: #AAAA22;
+}
+
 .relic.active{
 	background-color: #203040;
+}
+
+.relic>*{
+	z-index: 1;
+}
+
+.relic>.completion{
+	z-index: 0;
 }
 
 .relic>.data{
@@ -99,6 +115,8 @@ relics .nav>li.active>a{
 	background-color: #FFFFFF;
 	color: #000000;
 	font-weight: bold;
+	z-index: 5;
+	margin: -2px;
 }
 
 .reliclist{
@@ -136,6 +154,14 @@ relics .nav>li.active>a{
 	justify-content: space-between;
 }
 
+.relicreward>*{
+	z-index: 1;
+}
+
+.relicreward>.completion{
+	z-index: 0;
+}
+
 .relicreward span.name{
 	display: inline-block;
 	flex: 1 1 20%;
@@ -161,6 +187,10 @@ relics .nav>li.active>a{
 	border: 2px solid #304050;
 	flex: 0 0 80px;
 	margin:	0px 10px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	
 }
 
 .relicreward.rarity0{

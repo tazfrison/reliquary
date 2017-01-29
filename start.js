@@ -117,8 +117,19 @@ MongoClient.connect(url, function(err, db) {
 		});
 	});*/
 	
+	app.get("/admin", function(req, res){
+		if(!req.session.userId || !req.session.admin)
+			res.redirect("/");
+		else
+			res.render("admin");
+	})
+	
 	function update(collection){
 		return function(req, res){
+			if(!req.session.admin){
+				res.sendStatus(500);
+				return;
+			}
 			if(req.body._id){
 				let id = req.body._id;
 				delete req.body._id;

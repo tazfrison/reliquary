@@ -49,6 +49,12 @@
 				<option value=""></option>
 			</select>
 		</label>
+		<label>Mastered
+			<select ng-model="filters.mastered"
+				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				<option value=""></option>
+			</select>
+		</label>
 		<label>Type
 			<select ng-model="filters.type" ng-options="type.value as type.label for type in types">
 				<option value=""></option>

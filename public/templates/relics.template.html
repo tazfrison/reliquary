@@ -16,7 +16,7 @@
 	<div class="reliclist">
 		<div>
 			<div class="relic"
-				ng-repeat="relic in relics | filter:{era:era}"
+				ng-repeat="relic in relics | filter:{era:era} | orderBy: 'name'"
 				ng-click="selectRelic(relic)"
 				ng-controller="RelicCtrl"
 				ng-class="{active:selected._id == relic._id}"
@@ -59,7 +59,7 @@
 			</span>
 			<div>
 				<div class="relicreward" ng-class="'rarity' + reward.rarity" ng-repeat="reward in selected.rewards" ng-controller="RewardCtrl">
-					<div class="image"></div>
+					<div class="image" ng-style='part.icon ? {"background-image":"url(/images/" + part.icon + ".png)"} : {}'></div>
 					<span class="name">
 						{{part.name}}
 					</span>
