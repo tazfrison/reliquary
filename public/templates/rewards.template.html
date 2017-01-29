@@ -1,0 +1,30 @@
+<div class="header">
+	<label>Era
+		<select ng-model="era" ng-options="eras.indexOf(era) as era for era in eras"></select>
+	</label>
+	<label>Add Relic:
+		<select
+			ng-model="relic"
+			ng-change="selectRelic()"
+			ng-options="relic as relic.name for relic in relics
+				| filter:{era : era}
+				| orderBy: 'name'"
+			>
+			<option value=""></option>
+		</select>
+	</label>
+	<label>Add Part:
+		<select
+			ng-model="partId"
+			ng-change="selectPart()"
+			ng-options="part._id as part.name for part in parts | orderBy: 'name'"
+		>
+			<option value=""></option>
+		</select>
+	</label>
+</div>
+<div class="content">
+	<div class="reward" ng-repeat="reward in selected" ng-controller="RewardCtrl">
+		{{part.name}}
+	</div>
+</div>

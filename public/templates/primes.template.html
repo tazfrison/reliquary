@@ -1,0 +1,93 @@
+<script type="text/ng-template" id="PartDetail">
+	<div class="completion" ng-style="{width: prime.completion[partId].width}"></div>
+	<span>x{{quantity}}</span>
+	<span>{{part.name}}</span>
+	<span class="ducats">
+		<div class="image"></div>
+		<span>{{part.ducats}}</span>
+	</span>
+	<table>
+		<tr>
+			<td>Built:</td>
+			<td>
+				<button ng-click="adjust(false, false)" ng-disabled="part.built == 0">-</button>
+				<span>{{part.built}}</span>
+				<button ng-click="adjust(true, false)">+</button>
+			</td>
+		</tr>
+		<tr ng-if="part.hasBlueprint">
+			<td>Blueprints:</td>
+			<td>
+				<button ng-click="adjust(false, true)" ng-disabled="part.blueprints == 0">-</button>
+				<span>{{part.blueprints}}</span>
+				<button ng-click="adjust(true, true)">+</button>
+			</td>
+		</tr>
+	</table>
+	<div ng-if="part.hasBlueprint">
+		<div class="primedetails"
+			ng-repeat="requirement in part.requirements"
+			ng-controller="PartCtrl"
+			ng-include="'PartDetail'";
+			ng-init="partId = requirement.partId; quantity = requirement.quantity">
+		</div>
+	</div>
+</script>
+
+<div class="controls">
+	<button ng-if="login" ng-click="save()">Save</button>
+	<div class="filters">
+		<label>Vaulted
+			<select ng-model="filters.vaulted"
+				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				<option value=""></option>
+			</select>
+		</label>
+		<label>Completion
+			<select ng-model="filters.completion"
+				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				<option value=""></option>
+			</select>
+		</label>
+		<label>Type
+			<select ng-model="filters.type" ng-options="type.value as type.label for type in types">
+				<option value=""></option>
+			</select>
+		</label>
+		<label>Name
+			<input ng-model="filters.name" />
+		</label>
+	</div>
+	<div class="sorts">
+		<button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
+			Name
+			<div class="direction"></div>
+		</button>
+		<button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
+			Completion
+			<div class="direction"></div>
+		</button>
+	</div>
+</div>
+<div class="primes">
+	<div class="prime" 
+			ng-class="{active:selected[prime._id]}"
+			ng-repeat="prime in primes | primesfilter: filters: sorts"
+			ng-controller="PrimeCtrl">
+		<div class="completion" ng-style="{width: prime.completion.root.width}"></div>
+		<div class="summary" ng-click="select(prime._id)">
+			{{prime.name}}
+			<div ng-if="prime.vaulted" class="vaulted">V</div>
+			<label>Mastered: </label>
+			<button ng-click="mastered(prime._id, !prime.mastered); $event.stopPropagation()" ng-switch="prime.mastered">
+				<span ng-switch-when=true>Yes</span>
+				<span ng-switch-when=false>No</span>
+			</button>
+		</div>
+		<div class="primedetails"
+			ng-controller="PartCtrl"
+			ng-include="'PartDetail'"
+			ng-init="partId = prime.rootId; quantity = 1">
+		</div>
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<ul class="nav">
+	<li ng-class="{active:selected[0]}">
+		<a href="" ng-click="select(0)">Rewards</a>
+	</li>
+	<li ng-class="{active:selected[1]}">
+		<a href="" ng-click="select(1)">Relics</a>
+	</li>
+	<li ng-class="{active:selected[2]}">
+		<a href="" ng-click="select(2)">Primes</a>
+	</li>
+	<li ng-if="!login" style="float:right">
+		<a href="/login">Login</a>
+	</li>
+	<li ng-if="login" style="float:right">
+		<a href="/logout">Log Out</a>
+	</li>
+</ul>
+<rewards ng-show="selected[0]"></rewards>
+<relics ng-show="selected[1]"></relics>
+<primes ng-show="selected[2]"></primes>

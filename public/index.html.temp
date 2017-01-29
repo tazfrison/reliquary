@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+		<script src="javascript/relics.js"></script>
+		<script src="javascript/primes.js"></script>
+		<script src="javascript/data.js"></script>
+		<script src="javascript/app.js"></script>
+		<link rel="stylesheet" href="stylesheets/primes.stylesheet.css"></link>
+		<link rel="stylesheet" href="stylesheets/relics.stylesheet.css"></link>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	</head>
+	<body ng-app="reliquary">
+		<tabs>
+			<pane title="Relics">
+				<relics />
+			</pane>
+			<pane title="Primes">
+				<primes />
+			</pane>
+		</tabs>
+	</body>
+</html>

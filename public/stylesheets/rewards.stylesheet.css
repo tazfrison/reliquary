@@ -1,0 +1,27 @@
+rewards{
+	display: flex;
+	flex-direction: column;
+}
+
+rewards>.header{
+	flex: 0 0 40px;
+	background-color: #203040;
+}
+
+rewards>.content{
+	flex: 1 1 80%;
+	overflow-y: auto;
+}
+
+rewards .parts{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+rewards .part{
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	border: 1px solid #304050;
+}

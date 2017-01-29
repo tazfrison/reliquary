@@ -1,0 +1,176 @@
+relics{
+	display: flex;
+	flex-direction: column;
+}
+
+relics ul.nav{
+	background-color: #203040;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	border: none;
+	flex: 0 0 auto;
+}
+
+relics>div{
+	flex: 1 1 80%;
+}
+
+relics .nav>li{
+	float: none;
+	margin-bottom: 0px;
+}
+
+relics .nav>li>a{
+	border: none;
+	padding: 5px 10px;
+}
+
+relics .nav>li:hover>a{
+	background-color: transparent;
+}
+
+relics .nav>li.active>a{
+	cursor: default;
+	background-color: #304050;
+	border: none;
+	border-bottom: 3px solid #FFFFFF;
+}
+
+.relic{
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: space-between;
+	
+	position: relative;
+	height: 200px;
+	width: 300px;
+	border: 2px solid #304050;
+	margin: 3px;
+	
+	cursor: pointer;
+}
+
+.relic.active{
+	background-color: #203040;
+}
+
+.relic>.data{
+	margin: 10px;
+	flex: 1 1 80%;
+	display: inline-flex;
+	flex-direction: column;
+	cursor: help;
+}
+
+.relic>.data>div{
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 30%;
+	width: 100%;
+	align-content: center;
+}
+
+.relic>.data>.headers{
+	flex: 0 0 20px;
+}
+
+.relic>.data>div>div{
+	border-left: 2px solid #304050;
+	flex: 1 1 20%;
+	display: inline-block;
+}
+
+.relic>.data>div>div:first-child{
+	border: none;
+	flex: 0 0 30px;
+}
+
+.relic>.data>.ducats>div.image{
+	display: inline-block;
+	background-image: url("/images/ducat.png");
+	height: 26px;
+	width: 26px;
+}
+
+.relic > .title{
+	flex: 0 0 40px;
+	padding: 5px;
+	background-color: #FFFFFF;
+	color: #000000;
+	font-weight: bold;
+}
+
+.reliclist{
+	flex: 1 1 100%;
+	overflow: auto;
+}
+
+.relicdetails{
+	flex: 0 0 300px;
+	border: 2px solid;
+	background-color: #203040;
+	margin: 5px;
+	padding: 5px;
+}
+
+.relicdetails>span{
+	text-transform: none;
+}
+
+.relicdetails .title{
+	border-bottom: 2px solid #FFFFFF;
+}
+
+.relicdetails .vaulted{
+	color: #884444;
+}
+
+.relicreward{
+	position: relative;
+	height: 75px;
+	margin: 10px 0px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.relicreward span.name{
+	display: inline-block;
+	flex: 1 1 20%;
+}
+
+.relicreward div.ducats{
+	flex: 0 0 26px;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.relicreward>div.ducats>.image{
+	display: inline-block;
+	background-image: url("/images/ducat.png");
+	height: 26px;
+	width: 26px;
+}
+
+.relicreward>.image{
+	display: inline-block;
+	height: 50px;
+	border: 2px solid #304050;
+	flex: 0 0 80px;
+	margin:	0px 10px;
+}
+
+.relicreward.rarity0{
+	color: #BB5500;
+}
+
+.relicreward.rarity1{
+	color: #FFFFFF;
+}
+
+.relicreward.rarity2{
+	color: #AAAA22;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "reliquary",
+  "version": "0.1.1",
+  "description": "Tracker for Warframe prime items and relics",
+  "main": "start.js",
+  "dependencies": {
+    "express": "~4.14.0",
+    "mongodb": "^2.2.19",
+    "pug": "^2.0.0-beta6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Frison"
+}

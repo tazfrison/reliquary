@@ -1,0 +1,51 @@
+<div>
+	Primes <select ng-change="primeSelect()" ng-options="prime as prime.name for prime in primes | orderBy: 'name'" ng-model="prime">
+		<option value="">New Prime</option>
+	</select>
+	<button ng-click="setPrime()">Save</button><br />
+	<label>Name: <input ng-model="prime.name"></label>
+	<select ng-options="type.value as type.label for type in types" ng-model="prime.type"></select>
+	<label>Vaulted? <input ng-model="prime.vaulted" type="checkbox"></label>
+	<select ng-options="part._id as part.name for part in parts | orderBy: 'name'" ng-model="prime.rootId"></select>
+</div>
+<hr />
+<div>
+	Prime Parts <select ng-change="partSelect()" ng-options="part as part.name for part in parts | orderBy: 'name'" ng-model="part">
+		<option value="">New Part</option>
+	</select>
+	<button ng-click="setPart()">Save</button><br />
+	<label>Name: <input ng-model="part.name"></label>
+	<label>Ducats: <input ng-model="part.ducats"></label>
+	<label>Has a blueprint? <input ng-model="part.hasBlueprint" type="checkbox"></label>
+	<div ng-repeat="req in part.requirements">
+		<select ng-options="part._id as part.name for part in parts | orderBy: 'name'" ng-model="req.partId"></select>
+		<label>x<input ng-model="req.quantity"></label>
+		<button ng-click="part.requirements.splice($index, 1)">X</button>
+	</div>
+	<button ng-click="part.requirements.push({quantity: 1, partId: null})">New Requirement</button>
+</div>
+<hr />
+<div>
+	Presets: <label>Name:<input ng-model="preset.name"></label>
+	<label>Vaulted? <input ng-model="preset.vaulted" type="checkbox"></label>
+	<select ng-change="updatePreset()" ng-model="preset.type">
+		<option value="">Preset Prime types</option>
+		<option ng-repeat="preset in presets" value="{{$index}}">{{preset}}</option>
+	</select>
+	<button ng-click="makePreset()">Create</button>
+	<div ng-repeat="req in preset.parts">
+		{{req.name}}<label>Ducats: <input ng-model="req.ducats"></label>
+	</div>
+</div>
+<hr />
+<div>
+{{prime}}
+</div>
+<hr />
+<div>
+{{part}}
+</div>
+<hr />
+<div>
+{{preset}}
+</div>

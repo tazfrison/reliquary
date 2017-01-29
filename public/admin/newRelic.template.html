@@ -1,0 +1,19 @@
+<div>
+	Relics <select ng-change="relicSelect()" ng-options="relic as (eras[relic.era] + ' ' + relic.name) for relic in relics | orderBy: ['era', 'name']" ng-model="relic">
+		<option value="">New Relic</option>
+	</select>
+	<button ng-click="setRelic()">Save</button><br />
+	<label>Name: <input ng-model="relic.name"></label>
+	<select ng-model="relic.era" ng-options="eras.indexOf(era) as era for era in eras"></select>
+	<label>Vaulted? <input ng-model="relic.vaulted" type="checkbox"></label>
+	<h4>Rewards: </h3>
+	<table>
+		<tr ng-repeat="reward in relic.rewards">
+			<td>{{rarities[reward.rarity]}}:</td>
+			<td><select ng-options="part._id as part.name for part in parts | orderBy: 'name'" ng-model="reward.partId"></select></td>
+		</tr>
+	</table>
+</div>
+<div>
+	{{relic}}
+</div>

@@ -1,0 +1,76 @@
+<ul class="nav">
+	<li ng-class="{active:era == 0}">
+		<a href="" ng-click="select(0)">LITH ERA</a>
+	</li>
+	<li ng-class="{active:era == 1}">
+		<a href="" ng-click="select(1)">MESO ERA</a>
+	</li>
+	<li ng-class="{active:era == 2}">
+		<a href="" ng-click="select(2)">NEO ERA</a>
+	</li>
+	<li ng-class="{active:era == 3}">
+		<a href="" ng-click="select(3)">AXI ERA</a>
+	</li>
+</ul>
+<div style="display: flex">
+	<div class="reliclist">
+		<div>
+			<div class="relic"
+				ng-repeat="relic in relics | filter:{era:era}"
+				ng-click="selectRelic(relic)"
+				ng-controller="RelicCtrl"
+				ng-class="{active:selected._id == relic._id}"
+			>
+				<div class="data">
+					<div class="headers" title="Refinement">
+						<div></div>
+						<div title="Refinement: Intact">I</div>
+						<div title="Refinement: Exceptional">E</div>
+						<div title="Refinement: Flawless">F</div>
+						<div title="Refinement: Radiant">R</div>
+					</div>
+					<div class="ducats" title="Average ducats">
+						<div class="image"></div>
+						<div ng-repeat="ducats in completion().ducats track by $index">
+							{{ducats | number: 0}}
+						</div>
+					</div>
+					<div class="percent" title="Average chance to get something you need">
+						<div>%</div>
+						<div ng-repeat="item in completion().newPart track by $index">
+							{{item | number: 0}}
+						</div>
+					</div>
+				</div>
+				<div ng-style="{width: completion().length}" class="completion"></div>
+				<div class="title">{{eras[relic.era]}} {{relic.name}} relic</div>
+			</div>
+		</div>
+	</div>
+	<div class="relicdetails">
+		<span ng-hide="selected">Select a Relic to view its rewards.</span>
+		<div ng-show="selected">
+			<div class="title">
+				{{eras[selected.era]}} {{selected.name}} relic
+				<span class="vaulted" ng-if="selected.vaulted">Vaulted</span>
+			</div>
+			<span>
+				Possible Rewards
+			</span>
+			<div>
+				<div class="relicreward" ng-class="'rarity' + reward.rarity" ng-repeat="reward in selected.rewards" ng-controller="RewardCtrl">
+					<div class="image"></div>
+					<span class="name">
+						{{part.name}}
+					</span>
+					<div class="ducats">
+						<div class="image">
+						</div>
+						<span>{{part.ducats}}</span>
+					</div>
+					<div ng-style="{width: length(part)}" class="completion"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

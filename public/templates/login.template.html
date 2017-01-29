@@ -1,0 +1,27 @@
+<div class="error" ng-show="error">
+	{{error}}
+</div>
+<div class="inputs">
+	<div class="login">
+		<label>Username
+			<input ng-model="username" />
+		</label>
+		<br />
+		<label>Password
+			<input ng-model="password" type="password" />
+		</label>
+		<br />
+		<button ng-click="login()">Log In</button>
+	</div>
+	<div class="create">
+		<label>Username
+			<input ng-model="newusername" />
+		</label>
+		<br />
+		<label>Password
+			<input ng-model="newpassword" type="password" />
+		</label>
+		<br />
+		<button ng-click="create()">New User</button>
+	</div>
+</div>
