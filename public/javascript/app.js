@@ -8,18 +8,11 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards'])
 					$scope.selected[index] = true;
 				}
 				
-				$scope.login = false;
+				$scope.login = null;
 				
 				DataService.service.then(function(service){
 					let user = service.getInventory();
 					$scope.login = user.valid;
 				});
 			}]
-	})
-	
-	.component("rlqSelect", {
-		templateUrl: "templates/rlq-select.template.html",
-		controller: function($scope){
-			
-		}
 	})

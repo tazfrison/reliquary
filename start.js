@@ -202,6 +202,7 @@ MongoClient.connect(url, function(err, db) {
 				else{
 					let user = docs[0];
 					res.json({
+						name: user.name,
 						inventory: user.inventory,
 						mastered: user.mastered
 					});

@@ -8,11 +8,12 @@
 	<li ng-class="{active:selected[2]}">
 		<a href="" ng-click="select(2)">Primes</a>
 	</li>
-	<li ng-if="!login" style="float:right">
-		<a href="/login">Login</a>
+	<li style="float:right">
+		<a ng-if="login===false" href="/login">Login</a>
+		<a ng-if="login===true" href="/logout">Log Out</a>
 	</li>
-	<li ng-if="login" style="float:right">
-		<a href="/logout">Log Out</a>
+	<li ng-if="login===true" style="float:right">
+		<notifications></notifications>
 	</li>
 </ul>
 <rewards ng-show="selected[0]"></rewards>

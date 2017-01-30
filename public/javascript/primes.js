@@ -53,7 +53,6 @@ angular.module("primes", ["data"])
 				$scope.primes = service.getPrimes();
 				let inv = service.getInventory();
 				$scope.mastered = inv.setMastery.bind(inv);
-				$scope.save = inv.save.bind(inv);
 				$scope.login = inv.valid;
 			});
 			

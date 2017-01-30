@@ -1,6 +1,7 @@
 <div class="header">
+	<button ng-click="selected = []">Clear</button>
 	<label>Era
-		<select ng-model="era" ng-options="eras.indexOf(era) as era for era in eras"></select>
+		<select ng-model="era" ng-change="selected=[]" ng-options="eras.indexOf(era) as era for era in eras"></select>
 	</label>
 	<label>Add Relic:
 		<select
@@ -15,16 +16,33 @@
 	</label>
 	<label>Add Part:
 		<select
-			ng-model="partId"
+			ng-model="part"
 			ng-change="selectPart()"
-			ng-options="part._id as part.name for part in parts | orderBy: 'name'"
+			ng-options="part as part.name for part in parts | rewardsfilter: era"
 		>
 			<option value=""></option>
 		</select>
 	</label>
 </div>
 <div class="content">
-	<div class="reward" ng-repeat="reward in selected" ng-controller="RewardCtrl">
-		{{part.name}}
+	<div class="rewards" ng-class="'rarity' + level" ng-repeat="level in [2, 1, 0]">
+		<div class="reward"
+			ng-repeat="reward in selected | filter: {rarity:level} | orderBy: 'part.name'"
+		>
+			<div class="details">
+				<div class="ducats">
+					<span>{{reward.part.ducats}}</span>
+					<div class="image">
+					</div>
+				</div>
+				<button ng-click="get(reward.part)">{{reward.part.hasBlueprint ? reward.part.blueprints : reward.part.built}}</button>
+			</div>
+			<div class="image" ng-style='reward.part.icon ? {"background-image":"url(/images/" + reward.part.icon + ".png)"} : {}'>
+			</div>
+			<div class="name">
+				{{reward.part.name}}
+			</div>
+			<div ng-style="{width: length(reward.part)}" class="completion"></div>
+		</div>
 	</div>
 </div>

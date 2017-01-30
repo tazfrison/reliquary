@@ -13,14 +13,24 @@ main{
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 main>.nav{
-	flex: 0 0 40px;
+	height: 40px;
 }
 
-main>relics, main>primes{
-	flex: 1 1 40%;
+main>relics, main>primes, main>rewards{
+	flex: 1 1 80%;
+}
+
+main .overlay{
+	position: absolute;
+	height: 400px;
+	width: 200px;
+	right: 0;
+	background: rgba(0, 0, 0, .3);
+	z-index: 5;
 }
 
 *{
@@ -66,12 +76,12 @@ ul.nav{
 	display: block;
 }
 
-.nav>li:hover>a{
+.nav>li:hover a{
 	background-color: #203040;
 	border-bottom-color: #dddddd
 }
 
-.nav>li>a{
+.nav>li a{
 	position: relative;
 	display: block;
 	padding: 10px 15px;
@@ -81,7 +91,7 @@ ul.nav{
 	margin-right: 2px;
 }
 
-.nav>li.active>a{
+.nav>li.active a{
 	cursor: default;
 	background-color: #203040;
 	border: 1px solid #dddddd;
