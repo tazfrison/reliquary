@@ -48,6 +48,7 @@ rewards .rewards{
 	position: absolute;
 	top: 0px;
 	width: 100%;
+	left: 0px;
 	height: 40px;
 	display: flex;
 	flex-direction: row;
@@ -60,6 +61,7 @@ rewards .rewards{
 	background: rgba(0, 0, 0, 0.3);
 	position: absolute;
 	bottom: 0px;
+	left: 0px;
 	width: 100%;
 }
 

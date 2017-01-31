@@ -24,15 +24,6 @@ main>relics, main>primes, main>rewards{
 	flex: 1 1 80%;
 }
 
-main .overlay{
-	position: absolute;
-	height: 400px;
-	width: 200px;
-	right: 0;
-	background: rgba(0, 0, 0, .3);
-	z-index: 5;
-}
-
 *{
 	box-sizing: border-box;
 	text-transform: uppercase;

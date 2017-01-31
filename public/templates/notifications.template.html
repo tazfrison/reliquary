@@ -1,9 +1,16 @@
 <a href="" ng-click="toggle()">
 	Notifications
+	<div class="progress"
+		ng-style="saving ? {width: '100%', transition: 'width 10s linear' } : {width: '0%'}"
+	></div>
 </a>
-<div class="overlay" ng-show="overlay">
-	<span ng-show="pending">Pending</span>
-	<div ng-repeat="event in events">
-		Saved
+<div class="dropdown" ng-show="overlay">
+	<div class="item" ng-show="pending">
+		Pending
+		<button ng-show="saving" ng-click="cancel()">Cancel</button>
+		<button ng-show="!saving" ng-click="save()">Save</button>
+	</div>
+	<div class="item" ng-repeat="event in events">
+		Saved {{event.total}} {{event.total == 1 ? 'part' : 'parts'}}
 	</div>
 </div>

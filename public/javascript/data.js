@@ -165,8 +165,6 @@ angular.module('data', [])
 				this.requirements = [];
 				this.icon = "";
 			}
-			this.primes = [];
-			this.relics = [];
 		}
 		
 		Part.prototype.index = function(){
@@ -176,6 +174,8 @@ angular.module('data', [])
 			this.blueprints = 0;
 			this.required = 0;
 			this.owned = 0;
+			this.primes = [];
+			this.relics = [];
 		}
 		
 		Part.prototype.getData = function(){
@@ -402,10 +402,12 @@ angular.module('data', [])
 
 		Inventory.prototype.setTimeout = function(){
 			this.cancel();
-			this.promise = $timeout(() =>{
-				this.promise = false;
-				this.save();
-			}, 1000);
+			if(Object.keys(this.primes).length > 0 ||
+				Object.keys(this.parts).length > 0){
+				this.promise = $timeout(() =>{
+					this.save();
+				}, 10000);
+			}
 		}
 		
 		Inventory.prototype.cancel = function(){
@@ -435,10 +437,18 @@ angular.module('data', [])
 				data.parts = parts;
 			this.history.push({
 				primes: this.primes,
-				parts: this.parts
+				parts: this.parts,
+				total: Object.keys(this.primes).length + Object.keys(this.parts).length
 			});
 			this.primes = {};
 			this.parts = {};
+			this.promise = false;
+			
+			if(false){
+				let temp = $q.defer();
+				temp.resolve(true);
+				return temp.promise;
+			}
 			return $http.post("/api/users", data).then(res => {
 				return true;
 			});
@@ -488,13 +498,25 @@ angular.module('data', [])
 	}])
 	.component("notifications", {
 		controller: ["$scope", "DataService", function($scope, DataService){
+			$scope.saving = false;
 			$scope.pending = false;
 			$scope.events = [];
+			
 			DataService.service.then(service =>{
+			
+				let update = () => {
+					$scope.saving = !!$scope._inv.promise;
+					if(Object.keys($scope._inv.primes).length > 0 ||
+						Object.keys($scope._inv.parts).length > 0)
+						$scope.pending = true;
+					else
+						$scope.pending = false;
+				}
 				$scope._inv = service.getInventory();
-				$scope.$watch("_inv.promise", () => $scope.pending = !!$scope._inv.promise)
+				$scope.$watch("_inv.promise", update);
 				$scope.events = $scope._inv.history;
-				$scope.cancel = $scope._inv.cancel();
+				$scope.cancel = () => $scope._inv.cancel();
+				$scope.save = () => $scope._inv.save().then(update);
 			});
 			
 			$scope.overlay = false;

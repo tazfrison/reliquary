@@ -77,6 +77,18 @@ primes>.primes{
 	background-color: #203040;
 }
 
+.primedetails .relics .rarity0{
+	color: #BB5500;
+}
+
+.primedetails .relics .rarity1{
+	color: #FFFFFF;
+}
+
+.primedetails .relics .rarity2{
+	color: #AAAA22;
+}
+
 .primedetails>.ducats>.image{
 	display: inline-block;
 	background-image: url("/images/ducat.png");

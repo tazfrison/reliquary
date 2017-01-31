@@ -1,0 +1,26 @@
+notifications .dropdown{
+	position: absolute;
+	height: 400px;
+	width: 200px;
+	right: 0;
+	background: rgba(0, 0, 0, .3);
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+}
+
+notifications .dropdown>.item{
+	width: 100%;
+}
+
+notifications>a{
+	position: relative;
+}
+
+notifications .progress{
+	background: rgba(0, 127, 127, .3);
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}

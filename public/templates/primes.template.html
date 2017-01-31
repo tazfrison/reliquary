@@ -6,6 +6,11 @@
 		<div class="image"></div>
 		<span>{{part.ducats}}</span>
 	</span>
+	<span class="relics">
+		<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics">
+			{{eras[reward.relic.era]}} {{reward.relic.name}}
+		</span>
+	</span>
 	<table>
 		<tr>
 			<td>Built:</td>

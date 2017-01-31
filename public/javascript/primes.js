@@ -22,6 +22,8 @@ angular.module("primes", ["data"])
 					label: "Other",
 					value: "other"
 				}];
+				
+			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
 			
 			$scope.filters = {
 				vaulted: null,
