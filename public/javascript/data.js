@@ -81,6 +81,10 @@ angular.module('data', [])
 			if(value === this.mastered)
 				return;
 			this.mastered = value;
+			
+			if(partMap[this.rootId].built > 0)
+				return;
+			
 			let recurse = (id, quantity) => {
 				partMap[id].owned += quantity;
 				partMap[id].requirements.forEach(a =>{

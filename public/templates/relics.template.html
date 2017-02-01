@@ -59,7 +59,7 @@
 			</span>
 			<div>
 				<div class="relicreward" ng-class="'rarity' + reward.rarity" ng-repeat="reward in selected.rewards" ng-controller="RewardCtrl">
-					<div class="image" ng-style='part.icon ? {"background-image":"url(/images/" + part.icon + ".png)"} : {}'></div>
+					<div class="image" bkg-img icon="{{part.icon}}" blueprint="{{part.hasBlueprint}}"></div>
 					<span class="name">
 						{{part.name}}
 					</span>

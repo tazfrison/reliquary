@@ -58,24 +58,6 @@ angular.module('rewards', ["data", "relics"])
 		templateUrl: "templates/rewards.template.html"
 	})
 	
-	.directive("bkgImg", function(){
-		return function($scope, element, attrs){
-			let part = $scope.reward.part;
-			if(part.icon){
-				if(part.hasBlueprint){
-					element.css({
-						"background-image": 'url(/images/' + part.icon + '.png), url(/images/blueprintw.png)'
-					});
-				}
-				else{
-					element.css({
-						"background-image": 'url(/images/' + part.icon + '.png)'
-					});
-				}
-			}
-		};
-	})
-	
 	.filter("rewardsfilter", function(){
 		return function(input, era){
 			return input

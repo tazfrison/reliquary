@@ -8,7 +8,7 @@
 		</label>
 		<label>Completion
 			<select ng-model="filters.completion"
-				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				ng-options="o.v as o.n for o in [{ n: 'Extra', v: ''}, { n: 'Yes', v: true }, { n: 'No', v: false }]">
 				<option value=""></option>
 			</select>
 		</label>
@@ -25,11 +25,43 @@
 			Completion
 			<div class="direction"></div>
 		</button>
+		<button ng-click='toggle("ducats")' ng-class="{dsc:sorts.ducats===true, asc: sorts.ducats===false}">
+			Ducats
+			<div class="direction"></div>
+		</button>
 	</div>
 </div>
 <div class="parts">
 	<div class="part" 
-			ng-repeat="part in parts">
-		{{part.name}}
+			ng-repeat="part in parts | partsfilter: filters: sorts">
+		<div class="image" bkg-img icon="{{part.icon}}" blueprint={{part.hasBlueprint}}></div>
+		<div class="name">
+			{{part.name}}
+		</div>
+		<span class="ducats">
+			<div class="image"></div>
+			<span>{{part.ducats}}</span>
+		</span>
+		<div class="owned">
+			<table>
+				<tr>
+					<td>Built:</td>
+					<td>
+						<button ng-click="adjust(false, false)" ng-disabled="part.built == 0">-</button>
+						<span>{{part.built}}</span>
+						<button ng-click="adjust(true, false)">+</button>
+					</td>
+				</tr>
+				<tr ng-if="part.hasBlueprint">
+					<td>Blueprints:</td>
+					<td>
+						<button ng-click="adjust(false, true)" ng-disabled="part.blueprints == 0">-</button>
+						<span>{{part.blueprints}}</span>
+						<button ng-click="adjust(true, true)">+</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="completion" ng-style="{width: length(part)}"></div>
 	</div>
 </div>

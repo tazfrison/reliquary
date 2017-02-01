@@ -26,7 +26,7 @@ angular.module("primes", ["data"])
 			$scope.filters = {
 				vaulted: null,
 				type: null,
-				name: null,
+				name: "",
 				completion: null,
 				mastered: null
 			};
@@ -79,6 +79,8 @@ angular.module("primes", ["data"])
 				if(filters.vaulted !== null && i.vaulted !== filters.vaulted)
 					return false;
 				if(filters.type !== null && i.type !== filters.type)
+					return false;
+				if(filters.name !== "" && -1 == i.name.toLowerCase().indexOf(filters.name.toLowerCase()))
 					return false;
 				return true;
 			}).sort((a, b) =>{

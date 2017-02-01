@@ -16,3 +16,26 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory']
 				});
 			}]
 	})
+	
+	.directive("bkgImg", function(){
+		return function($scope, element, attrs){
+			let temp = () => {
+				let icon = attrs["icon"],
+					blueprint = attrs["blueprint"];
+				if(icon){
+					if(blueprint == "true"){
+						element.css({
+							"background-image": 'url(/images/' + icon + '.png), url(/images/blueprintw.png)'
+						});
+					}
+					else{
+						element.css({
+							"background-image": 'url(/images/' + icon + '.png)'
+						});
+					}
+				}
+			}
+			attrs.$observe("icon", temp);
+			attrs.$observe("blueprint", temp);
+		};
+	})

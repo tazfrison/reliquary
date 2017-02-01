@@ -187,9 +187,9 @@ relics .nav>li.active>a{
 	border: 2px solid #304050;
 	width: 80px;
 	margin:	0px 10px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background-size: contain, 100% 100%;
+	background-repeat: no-repeat, no-repeat;
+	background-position: center center, center center;
 	
 }
 
