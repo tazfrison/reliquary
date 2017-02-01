@@ -37,7 +37,7 @@
 				</div>
 				<button ng-click="get(reward.part)">{{reward.part.hasBlueprint ? reward.part.blueprints : reward.part.built}}</button>
 			</div>
-			<div class="image" ng-style='reward.part.icon ? {"background-image":"url(/images/" + reward.part.icon + ".png)"} : {}'>
+			<div class="image" bkg-img>
 			</div>
 			<div class="name">
 				{{reward.part.name}}
