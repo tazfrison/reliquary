@@ -1,0 +1,35 @@
+<div class="controls">
+	<div class="filters">
+		<label>Vaulted
+			<select ng-model="filters.vaulted"
+				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				<option value=""></option>
+			</select>
+		</label>
+		<label>Completion
+			<select ng-model="filters.completion"
+				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
+				<option value=""></option>
+			</select>
+		</label>
+		<label>Name
+			<input ng-model="filters.name" />
+		</label>
+	</div>
+	<div class="sorts">
+		<button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
+			Name
+			<div class="direction"></div>
+		</button>
+		<button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
+			Completion
+			<div class="direction"></div>
+		</button>
+	</div>
+</div>
+<div class="parts">
+	<div class="part" 
+			ng-repeat="part in parts">
+		{{part.name}}
+	</div>
+</div>

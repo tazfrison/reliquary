@@ -8,6 +8,9 @@
 	<li ng-class="{active:selected[2]}">
 		<a href="" ng-click="select(2)">Primes</a>
 	</li>
+	<li ng-class="{active:selected[3]}">
+		<a href="" ng-click="select(3)">Inventory</a>
+	</li>
 	<li style="float:right">
 		<a ng-if="login===false" href="/login">Login</a>
 		<a ng-if="login===true" href="/logout">Log Out</a>
@@ -19,3 +22,4 @@
 <rewards ng-show="selected[0]"></rewards>
 <relics ng-show="selected[1]"></relics>
 <primes ng-show="selected[2]"></primes>
+<inventory ng-show="selected[3]"></inventory>

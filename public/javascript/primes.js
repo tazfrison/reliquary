@@ -3,8 +3,6 @@ angular.module("primes", ["data"])
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.primes = [];
 			$scope.mastered = angular.noop;
-			$scope.save = angular.noop;
-			$scope.login = false;
 			
 			$scope.types = [{
 					label: "Warframe",
@@ -55,7 +53,6 @@ angular.module("primes", ["data"])
 				$scope.primes = service.getPrimes();
 				let inv = service.getInventory();
 				$scope.mastered = inv.setMastery.bind(inv);
-				$scope.login = inv.valid;
 			});
 			
 			$scope.selected = {};
@@ -63,8 +60,6 @@ angular.module("primes", ["data"])
 			$scope.select = function(id) {
 				$scope.selected[id] = !$scope.selected[id];
 			}
-			
-			$scope.min = Math.min;
 		}],
 		templateUrl: "templates/primes.template.html"
 	})
