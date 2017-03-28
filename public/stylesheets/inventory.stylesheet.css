@@ -52,3 +52,15 @@ inventory>.parts{
 	height: 50px;
 	width: 80px;
 }
+
+.part .relics .rarity0{
+	color: #BB5500;
+}
+
+.part .relics .rarity1{
+	color: #FFFFFF;
+}
+
+.part .relics .rarity2{
+	color: #AAAA22;
+}

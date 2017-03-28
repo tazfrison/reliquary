@@ -65,6 +65,23 @@ angular.module('inventory', ["data"])
 		templateUrl: "templates/inventory.template.html"
 	})
 	
+	.controller("InventoryCtrl", ["$scope", "DataService", function($scope, DataService){
+		$scope.adjust = angular.noop;
+		
+		DataService.service.then(service =>{
+			let inv = service.getInventory();
+			$scope.adjust = (inc, bp) => {
+				let built = $scope.part.built;
+				let blueprints = $scope.part.blueprints;
+				if(bp)
+					blueprints += inc ? 1 : -1;
+				else
+					built += inc ? 1 : -1;
+				inv.setPartCount($scope.part._id, built, blueprints);
+			}
+		});
+	}])
+	
 	.filter("partsfilter", function(){
 		return function(input, filters, sorts){
 			return input.filter(i => {
