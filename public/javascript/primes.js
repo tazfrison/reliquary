@@ -69,8 +69,8 @@ angular.module("primes", ["data"])
 			return input.filter(i => {
 				if(filters.completion !== null){
 					if(filters.completion
-						? (i.completion.root.completion !== 1)
-						: (i.completion.root.completion === 1)){
+						? (i.requirements.root.owned < i.requirements.root.required)
+						: (i.requirements.root.owned >= i.requirements.root.required)){
 						return false;
 					}
 				}
