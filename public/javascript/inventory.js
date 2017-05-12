@@ -52,13 +52,12 @@ angular.module('inventory', ["data"])
 			DataService.service.then(service =>{
 				$scope.parts = service.getParts();
 				let inv = service.getInventory();
-				$scope.mastered = inv.setMastery.bind(inv);
 			});
 			
 			$scope.length = function(part){
 				if(!part)
 					return "0%";
-				let percent = 100 * Math.min(1, (part.owned + part.blueprints) / part.required) + "%";
+				let percent = 100 * Math.min(1, (part.used + part.built + part.blueprints) / part.required) + "%";
 				return percent;
 			};
 		}],
@@ -71,13 +70,7 @@ angular.module('inventory', ["data"])
 		DataService.service.then(service =>{
 			let inv = service.getInventory();
 			$scope.adjust = (inc, bp) => {
-				let built = $scope.part.built;
-				let blueprints = $scope.part.blueprints;
-				if(bp)
-					blueprints += inc ? 1 : -1;
-				else
-					built += inc ? 1 : -1;
-				inv.setPartCount($scope.part._id, built, blueprints);
+				inv.setPartCount($scope.part._id, inc ? 1 : -1, bp);
 			}
 		});
 	}])
@@ -88,7 +81,7 @@ angular.module('inventory', ["data"])
 				if(filters.name !== "" && -1 == i.name.toLowerCase().indexOf(filters.name.toLowerCase()))
 					return false;
 				if(filters.completion !== null){
-					let completion = (i.owned + i.blueprints) / (i.required);
+					let completion = (i.used + i.built + i.blueprints) / (i.required);
 					if(filters.completion === "" && completion <= 1)
 						return false;
 					else if(filters.completion === true && completion < 1)
@@ -112,8 +105,8 @@ angular.module('inventory', ["data"])
 					}
 				}
 				if(sorts.completion !== null){
-					let _a = Math.min(1, (a.owned + a.blueprints) / a.required),
-						_b = Math.min(1, (b.owned + b.blueprints) / b.required)
+					let _a = Math.min(1, (a.used + a.built + a.blueprints) / a.required),
+						_b = Math.min(1, (b.used + b.built + b.blueprints) / b.required)
 					if(_a !== _b)
 					{
 						return sorts.completion ?

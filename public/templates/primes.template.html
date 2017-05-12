@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="PartDetail">
-	<div class="completion" ng-style="{width: prime.completion[partId].width}"></div>
+	<div class="completion" ng-style="{width: width(prime, part)}"></div>
 	<span>x{{quantity}}</span>
 	<span>{{part.name}}</span>
 	<span class="ducats">
@@ -84,7 +84,7 @@
 			ng-class="{active:selected[prime._id]}"
 			ng-repeat="prime in primes | primesfilter: filters: sorts"
 			ng-controller="PrimeCtrl">
-		<div class="completion" ng-style="{width: prime.completion.root.width}"></div>
+		<div class="completion" ng-style="{width: prime.requirements.root.width}"></div>
 		<div class="summary" ng-click="select(prime._id)">
 			{{prime.name}}
 			<div ng-if="prime.vaulted" class="vaulted">V</div>

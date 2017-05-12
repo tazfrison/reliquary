@@ -85,11 +85,13 @@ angular.module("primes", ["data"])
 				return true;
 			}).sort((a, b) =>{
 				if(sorts.completion !== null){
-					if(a.completion.root.completion !== b.completion.root.completion)
+					let _a = Math.min(1, a.requirements.root.owned / a.requirements.root.required),
+						_b = Math.min(1, b.requirements.root.owned / b.requirements.root.required)
+					if(_a !== _b)
 					{
 						return sorts.completion ?
-							b.completion.root.completion - a.completion.root.completion :
-							a.completion.root.completion - b.completion.root.completion;
+							_b - _a :
+							_a - _b;
 					}
 				}
 				return sorts.name ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
@@ -105,13 +107,7 @@ angular.module("primes", ["data"])
 			$scope.part = service.getPart($scope.prime.rootId);
 			let inv = service.getInventory();
 			$scope.adjust = (inc, bp) => {
-				let built = $scope.part.built;
-				let blueprints = $scope.part.blueprints;
-				if(bp)
-					blueprints += inc ? 1 : -1;
-				else
-					built += inc ? 1 : -1;
-				inv.setPartCount($scope.part._id, built, blueprints);
+				inv.setPartCount($scope.part._id, inc ? 1 : -1, bp);
 			}
 			$scope.mastered = inv.setMastery.bind(inv);
 		});
@@ -124,14 +120,14 @@ angular.module("primes", ["data"])
 		DataService.service.then(service =>{
 			$scope.part = service.getPart($scope.partId);
 			let inv = service.getInventory();
+			
 			$scope.adjust = (inc, bp) => {
-				let built = $scope.part.built;
-				let blueprints = $scope.part.blueprints;
-				if(bp)
-					blueprints += inc ? 1 : -1;
-				else
-					built += inc ? 1 : -1;
-				inv.setPartCount($scope.part._id, built, blueprints);
+				inv.setPartCount($scope.part._id, inc ? 1 : -1, bp);
 			}
+			
+			$scope.width = (prime, part) => {
+				let temp = prime.requirements[part._id];
+				return Math.min(1, temp.owned / temp.required) * 100 + "%";
+			};
 		});
 	}])

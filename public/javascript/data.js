@@ -18,257 +18,231 @@ angular.module('data', [])
 				[.167, .20, .10]
 			];
 		
-		function Prime(data){
-			if(data){
-				this.name = data.name || "";
-				this.vaulted = !!data.vaulted;
-				this.type = data.type || "other";
-				this.rootId = data.rootId || null;
-				if(data._id){
-					this._id = data._id;
-					this.index();
-				}
-			}
-			else{
-				this.name = "";
-				this.vaulted = false;
-				this.type = "other";
-				this.rootId = null;
-			}
-		}
-		
-		Prime.prototype.index = function(){
-			primes.push(this);
-			primeMap[this._id] = this;
-			this.mastered = false;
-			this.completion = {
-				root: {
-					completion: 0,
-					width: "0%"
-				}
-			};
-			
-			let recurse = (id, quantity) => {
-				this.completion[id] = {quantity: quantity, completion: 0, width: "0%"};
-				partMap[id].primes.push(this);
-				partMap[id].required += quantity;
-				partMap[id].requirements.forEach(a =>{
-					recurse(a.partId, quantity * a.quantity);
-				});
-			}
-			recurse(this.rootId, 1);
-		}
-		
-		Prime.prototype.getData = function(){
-			if(!this.name || this.name == ""
-				|| this.vaulted === undefined
-				|| !this.type || this.type == ""
-				|| !this.rootId){
-					return false;
-			}
-			let data = {
-				name: this.name,
-				vaulted: this.vaulted,
-				type: this.type,
-				rootId: this.rootId
-			};
-			if(this._id)
-				data._id = this._id;
-			return data;
-		}
-		
-		Prime.prototype.master = function(value){
-			if(value === this.mastered)
-				return;
-			this.mastered = value;
-			
-			if(partMap[this.rootId].built > 0)
-				return;
-			
-			let recurse = (id, quantity) => {
-				partMap[id].owned += quantity;
-				partMap[id].requirements.forEach(a =>{
-					recurse(a.partId, quantity * a.quantity);
-				});
-			}
-			recurse(this.rootId, value ? 1 : -1);
-			this.update();
-		}
-		
-		Prime.prototype.update = function(){
-			let owned = 0;
-			if(this.mastered)
-				owned = 1;
-			let recurse = (id, owned) =>{
-				let part = partMap[id];
-				let quantity = this.completion[id].quantity;
-				owned = Math.min(quantity, owned + part.built);
-				let percent;
-				if(part.requirements && part.requirements.length > 0){
-					let percents = [];
-					part.requirements.forEach(req => {
-						let percent = recurse(req.partId, owned * req.quantity);
-						if(owned < quantity){
-							percents.push.apply(percents, new Array(1 * req.quantity).fill(percent));
-						}
-					});
-					if(owned >= quantity){
-						percent = 1;
-					}
-					else{
-						percents.push(Math.min(1, part.blueprints / (quantity - owned)));
-						percent = average(percents);
-						percent *= (quantity - owned);
-						percent += owned;
-						percent /= quantity;
+		class Prime {
+			constructor(data) {
+				if(data) {
+					this.name = data.name || "";
+					this.vaulted = !!data.vaulted;
+					this.type = data.type || "other";
+					this.rootId = data.rootId || null;
+					if(data._id) {
+						this._id = data._id;
+						this.index();
 					}
 				}
-				else{
-					percent = Math.min(quantity, owned + part.blueprints) / quantity;
-				}
-				this.completion[id].completion = percent;
-				this.completion[id].width = 100 * percent + "%";
-				return percent;
-			}
-			let percent = this.completion.root.completion = recurse(this.rootId, owned);
-			this.completion.root.width = 100 * percent + "%";
-		}
-		
-		Prime.prototype.save = function(){
-			let data = this.getData();
-			if(data === false){
-				let defer = $q.defer();
-				defer.reject(false);
-				return defer.promise;
-			}
-			return $http.post("/api/primes", this.getData()).then(res => {
-				if(!this._id){
-					this._id = res.data._id;
-					this.index();
-				}
-				return true;
-			});
-		}
-		
-		function Part(data){
-			if(data){
-				this.name = data.name || "";
-				this.hasBlueprint = !!data.hasBlueprint;
-				this.ducats = data.ducats || 0;
-				this.requirements = data.requirements || [];
-				this.icon = data.icon || "";
-				if(data._id){
-					this._id = data._id;
-					this.index();
+				else {
+					this.name = "";
+					this.vaulted = false;
+					this.type = "other";
+					this.rootId = null;
 				}
 			}
-			else{
-				this.name = "";
-				this.hasBlueprint = false;
-				this.ducats = 0;
-				this.requirements = [];
-				this.icon = "";
-			}
-		}
-		
-		Part.prototype.index = function(){
-			parts.push(this);
-			partMap[this._id] = this;
-			this.built = 0;
-			this.blueprints = 0;
-			this.required = 0;
-			this.owned = 0;
-			this.primes = [];
-			this.relics = [];
-		}
-		
-		Part.prototype.getData = function(){
-			if(!this.name || this.name == ""
-				|| this.hasBlueprint === undefined
-				|| this.ducats === undefined){
-					return false;
-			}
-			let data = {
-				name: this.name,
-				hasBlueprint: this.hasBlueprint,
-				ducats: this.ducats
-			};
-			if(this.requirements && this.requirements.length > 0)
-				data.requirements = this.requirements;
-			if(this._id)
-				data._id = this._id;
-			if(this.icon)
-				data.icon = this.icon;
-			return data;
-		}
-		
-		Part.prototype.setCounts = function(built, blueprints){
-			if(this.built == built && this.blueprints == blueprints)
-				return;
-			if(this.built !== built){
-				let recurse = function(id, quantity){
-					partMap[id].owned += quantity;
-					partMap[id].requirements.forEach(a =>{
+			
+			index() {
+				primes.push(this);
+				primeMap[this._id] = this;
+				this.mastered = false;
+				this.requirements = {
+					root: {
+						owned: 0,
+						required: 0
+					}
+				}
+				let recurse = (id, quantity) => {
+					this.requirements[id] = {
+						owned: 0,
+						required: quantity
+					};
+					this.requirements.root.required += quantity;
+					partMap[id].primes.push(this);
+					partMap[id].required += quantity;
+					partMap[id].requirements.forEach(a => {
 						recurse(a.partId, quantity * a.quantity);
 					});
 				}
-				recurse(this._id, built - this.built);
+				recurse(this.rootId, 1);
+				this.requirements.root.width = (Math.min(1, this.requirements.root.owned / this.requirements.root.required) * 100) + "%";
 			}
 			
-			this.blueprints = blueprints;
-			this.built = built;
-			this.primes.forEach(p => p.update());
+			getData() {
+				if(!this.name || this.name == ""
+					|| this.vaulted === undefined
+					|| !this.type || this.type == ""
+					|| !this.rootId) {
+						return false;
+				}
+				let data = {
+					name: this.name,
+					vaulted: this.vaulted,
+					type: this.type,
+					rootId: this.rootId
+				};
+				if(this._id)
+					data._id = this._id;
+				return data;
+			}
+			
+			master(value) {
+				if(value === this.mastered)
+					return;
+				this.mastered = value;
+				
+				partMap[this.rootId].update("used", value ? 1 : -1);
+				
+				this.adjust(this.rootId, value ? 1 : -1, true);
+			}
+			
+			_update(id, change) {
+				let req = this.requirements[id];
+				let prev = Math.min(req.owned, req.required);
+				this.requirements[id].owned += change;
+				let next = Math.min(req.owned, req.required);
+				change = next - prev;
+				if(change == 0)
+					return;
+				this.requirements.root.owned += change;
+				partMap[id].requirements.forEach(a => {
+					this._update(a.partId, change * a.quantity);
+				});
+			}
+			
+			adjust(id, change, recurse) {
+				if(recurse)
+					this._update(id, change);
+				else {
+					let req = this.requirements[id];
+					let prev = Math.min(req.owned, req.required);
+					this.requirements[id].owned += change;
+					let next = Math.min(req.owned, req.required);
+					change = next - prev;
+					this.requirements.root.owned += change;
+				}
+				this.requirements.root.width = (Math.min(1, this.requirements.root.owned / this.requirements.root.required) * 100) + "%";
+			}
+			
+			save() {
+				let data = this.getData();
+				if(data === false) {
+					let defer = $q.defer();
+					defer.reject(false);
+					return defer.promise;
+				}
+				return $http.post("/api/primes", this.getData()).then(res => {
+					if(!this._id) {
+						this._id = res.data._id;
+						this.index();
+					}
+					return true;
+				});
+			}
+		}
+
+		class Part {
+			constructor(data) {
+				if(data) {
+					this.name = data.name || "";
+					this.hasBlueprint = !!data.hasBlueprint;
+					this.ducats = data.ducats || 0;
+					this.requirements = data.requirements || [];
+					this.icon = data.icon || "";
+					if(data._id) {
+						this._id = data._id;
+						this.index();
+					}
+				}
+				else {
+					this.name = "";
+					this.hasBlueprint = false;
+					this.ducats = 0;
+					this.requirements = [];
+					this.icon = "";
+				}
+			}
+			
+			index() {
+				parts.push(this);
+				partMap[this._id] = this;
+				this.primes = [];
+				this.relics = [];
+				this.required = 0;
+				this.built = 0;
+				this.blueprints = 0;
+				this.used = 0;
+			}
+			
+			getData() {
+				if(!this.name || this.name == ""
+					|| this.hasBlueprint === undefined
+					|| this.ducats === undefined) {
+						return false;
+				}
+				let data = {
+					name: this.name,
+					hasBlueprint: this.hasBlueprint,
+					ducats: this.ducats
+				};
+				if(this.requirements && this.requirements.length > 0)
+					data.requirements = this.requirements;
+				if(this._id)
+					data._id = this._id;
+				if(this.icon)
+					data.icon = this.icon;
+				return data;
+			}
+			
+			update(type, change) {
+				//Check for unnecessary updates
+				if(change == 0)
+					return;
+				
+				//Prevent going below 0
+				if(this[type] < -change)
+					change = -this[type];
+				
+				//Mark progress towards each prime that uses this part
+				if(type == "built" || type == "blueprints") {
+					this.primes.forEach(prime => {
+						prime.adjust(this._id, change, type == "built");
+					});
+				}
+				
+				//Don't mark parts used beyond what's required
+				let prev = Math.min(this.used + this.built, this.required);
+				this[type] += change;
+				let next = Math.min(this.used + this.built, this.required);
+				
+				change = next - prev;
+				if(change == 0)
+					return;
+				
+				//Propagate progress
+				if(type == "built" || type == "used") {
+					this.requirements.forEach(req => {
+						partMap[req.partId].update("used", change * req.quantity);
+					});
+				}
+			}
+			
+			save() {
+				let data = this.getData();
+				if(data === false) {
+					let defer = $q.defer();
+					defer.reject(false);
+					return defer.promise;
+				}
+				return $http.post("/api/parts", this.getData()).then(res => {
+					if(!this._id) {
+						this._id = res.data._id;
+						this.index();
+					}
+					return true;
+				});
+			}
 		}
 		
-		Part.prototype.save = function(){
-			let data = this.getData();
-			if(data === false){
-				let defer = $q.defer();
-				defer.reject(false);
-				return defer.promise;
-			}
-			return $http.post("/api/parts", this.getData()).then(res => {
-				if(!this._id){
-					this._id = res.data._id;
-					this.index();
-				}
-				return true;
-			});
-		}
-		
-		function Relic(data){
-			if(data){
-				this.name = data.name || "";
-				this.vaulted = !!data.vaulted;
-				this.era = data.era || 0;
-				this.rewards = data.rewards || [
-						{rarity: 0, partId: null},
-						{rarity: 0, partId: null},
-						{rarity: 0, partId: null},
-						{rarity: 1, partId: null},
-						{rarity: 1, partId: null},
-						{rarity: 2, partId: null}
-					];
-				if(this.rewards.length == 0){
-					this.rewards = [
-						{rarity: 0, partId: null},
-						{rarity: 0, partId: null},
-						{rarity: 0, partId: null},
-						{rarity: 1, partId: null},
-						{rarity: 1, partId: null},
-						{rarity: 2, partId: null}
-					]
-				}
-				if(data._id){
-					this._id = data._id;
-					this.index();
-				}
-			}
-			else{
-				this.name = "";
-				this.era = 0,
-				this.vaulted = false;
-				this.rewards = [
+		class Relic {
+			static get REWARDS() {
+				return [
 					{rarity: 0, partId: null},
 					{rarity: 0, partId: null},
 					{rarity: 0, partId: null},
@@ -277,185 +251,223 @@ angular.module('data', [])
 					{rarity: 2, partId: null}
 				];
 			}
-		}
-		
-		Relic.prototype.index = function(){
-			relics.push(this);
-			relicMap[this._id] = this;
-			this.rewards.forEach(rew =>{
-				if(!rew.partId)
-					return;
-				partMap[rew.partId].relics.push({
-					rarity: rew.rarity,
-					relic: this
-				});
-			});
-		}
-		
-		Relic.prototype.getData = function(){
-			if(!this.name || this.name == ""
-				|| this.vaulted === undefined
-				|| this.era === undefined){
-					return false;
-			}
-			if(!this.rewards || this.rewards.length !== 6 || this.rewards.some(a => a.partId == null)){
-				return false;
-			}
-			let data = {
-				name: this.name,
-				vaulted: this.vaulted,
-				era: this.era,
-				rewards: this.rewards
-			};
-			if(this._id)
-				data._id = this._id;
-			return data;
-		}
-		
-		Relic.prototype.save = function(){
-			let data = this.getData();
-			if(data === false){
-				let defer = $q.defer();
-				defer.reject(false);
-				return defer.promise;
-			}
-			return $http.post("/api/relics", this.getData()).then(res => {
-				if(!this._id){
-					this._id = res.data._id;
-					this.index();
+			
+			constructor(data) {
+				if(data) {
+					this.name = data.name || "";
+					this.vaulted = !!data.vaulted;
+					this.era = data.era || 0;
+					this.rewards = data.rewards || Relic.REWARDS;
+					if(this.rewards.length == 0) {
+						this.rewards = Relic.REWARDS;
+					}
+					if(data._id) {
+						this._id = data._id;
+						this.index();
+					}
 				}
-				return true;
-			});
-		}
-		
-		function Inventory(user){
-			this.primes = {};
-			this.parts = {};
-			this.valid = false;
-			this.history = [];
-			this.name = "";
-			this.promise = false;
-			
-			if(!user)
-				return;
-			
-			this.valid = true;
-			this.name = user.name;
-
-			Object.keys(user.inventory).forEach(id => {
-				this.setPartCount(id, user.inventory[id].built, user.inventory[id].blueprints);
-			});
-			user.mastered.forEach(primeId => {
-				this.setMastery(primeId, true);
-			});
-			
-			this.cancel();
-			this.primes = {};
-			this.parts = {};
-		}
-		
-		Inventory.prototype.setMastery = function(id, value){
-			let prime = primeMap[id];
-			//No change to current
-			if(prime.mastered == value)
-				return;
-
-			this.cancel();
-
-			//Resetting to saved value
-			if(this.primes[id] && this.primes[id] === value)
-				delete this.primes[id];
-			//Changed from saved value
-			else
-				this.primes[id] = prime.mastered;
-			
-			//Update local
-			prime.master(value);
-			
-			this.setTimeout();
-		}
-		
-		Inventory.prototype.setPartCount = function(id, built, blueprints){
-			let part = partMap[id];
-			
-			//No change
-			if(part.built === built && part.blueprints === blueprints)
-				return;
-			
-			this.cancel();
-			
-			//Resetting to saved value
-			if(this.parts[id]
-				&& this.parts[id].built === built
-				&& this.parts[id].blueprints === blueprints){
-				delete this.parts[id];
+				else {
+					this.name = "";
+					this.era = 0,
+					this.vaulted = false;
+					this.rewards = Relic.REWARDS;
+				}
 			}
-			//Changed from saved value
-			else{
-				this.parts[id] = {
-					built: part.built,
-					blueprints: part.blueprints
+			
+			index() {
+				relics.push(this);
+				relicMap[this._id] = this;
+				this.rewards.forEach(rew => {
+					if(!rew.partId)
+						return;
+					partMap[rew.partId].relics.push({
+						rarity: rew.rarity,
+						relic: this
+					});
+				});
+			}
+			
+			getData() {
+				if(!this.name || this.name == ""
+					|| this.vaulted === undefined
+					|| this.era === undefined) {
+						return false;
+				}
+				if(!this.rewards || this.rewards.length !== 6 || this.rewards.some(a => a.partId == null)) {
+					return false;
+				}
+				let data = {
+					name: this.name,
+					vaulted: this.vaulted,
+					era: this.era,
+					rewards: this.rewards
 				};
+				if(this._id)
+					data._id = this._id;
+				return data;
 			}
 			
-			//Update local
-			part.setCounts(built, blueprints);
+			save() {
+				let data = this.getData();
+				if(data === false) {
+					let defer = $q.defer();
+					defer.reject(false);
+					return defer.promise;
+				}
+				return $http.post("/api/relics", this.getData()).then(res => {
+					if(!this._id) {
+						this._id = res.data._id;
+						this.index();
+					}
+					return true;
+				});
+			}
 			
-			this.setTimeout();
+			adjust(id, change) {
+				
+			}
 		}
 
-		Inventory.prototype.setTimeout = function(){
-			this.cancel();
-			if(Object.keys(this.primes).length > 0 ||
-				Object.keys(this.parts).length > 0){
-				this.promise = $timeout(() =>{
-					this.save();
-				}, 10000);
-			}
-		}
-		
-		Inventory.prototype.cancel = function(){
-			if(this.promise !== false){
-				$timeout.cancel(this.promise);
+		class Inventory {
+			constructor(user) {
+				this.primes = {};
+				this.parts = {};
+				this.valid = false;
+				this.history = [];
+				this.name = "";
 				this.promise = false;
+				
+				if(!user)
+					return;
+				
+				this.valid = true;
+				this.name = user.name;
+
+				Object.keys(user.inventory).forEach(id => {
+					this.setPartCount(id, user.inventory[id].built, false);
+					this.setPartCount(id, user.inventory[id].blueprints, true);
+				});
+				user.mastered.forEach(primeId => {
+					this.setMastery(primeId, true);
+				});
+				
+				this.cancel();
+				this.primes = {};
+				this.parts = {};
 			}
-		}
-		
-		Inventory.prototype.save = function(){
-			let primes = Object.keys(this.primes).map(id => ({_id: id, value: primeMap[id].mastered}))
-			let parts = Object.keys(this.parts).map(id => ({
-				_id: id,
-				built: partMap[id].built,
-				blueprints: partMap[id].blueprints
-			}));
-			//Nothing to do
-			if(primes.length === 0 && parts.length === 0){
-				let promise = $q.defer();
-				promise.resolve(true);
-				return promise.promise;
-			}
-			let data = {};
-			if(primes.length > 0)
-				data.primes = primes;
-			if(parts.length > 0)
-				data.parts = parts;
-			this.history.push({
-				primes: this.primes,
-				parts: this.parts,
-				total: Object.keys(this.primes).length + Object.keys(this.parts).length
-			});
-			this.primes = {};
-			this.parts = {};
-			this.promise = false;
 			
-			if(false){
-				let temp = $q.defer();
-				temp.resolve(true);
-				return temp.promise;
+			setMastery(id, value) {
+				let prime = primeMap[id];
+				//No change to current
+				if(prime.mastered == value)
+					return;
+
+				this.cancel();
+
+				//Resetting to saved value
+				if(this.primes[id] && this.primes[id] === value)
+					delete this.primes[id];
+				//Changed from saved value
+				else
+					this.primes[id] = prime.mastered;
+				
+				//Update local
+				prime.master(value);
+				
+				this.setTimeout();
 			}
-			return $http.post("/api/users", data).then(res => {
-				return true;
-			});
+			
+			setPartCount(id, change, blueprints) {
+				let part = partMap[id];
+				let saved = blueprints ? part.blueprints : part.built;
+				if(saved < -change)
+					change = -saved;
+			
+				//No change
+				if(change === 0)
+					return;
+				
+				this.cancel();
+				
+				//Mark part as changed since last save
+				if(!this.parts[id]) {
+					this.parts[id] = {
+						built: 0,
+						blueprints: 0
+					};
+				}
+				
+				//Update changelog
+				this.parts[id][blueprints ? "blueprints" : "built"] += change;
+				
+				//Resetting to saved value
+				if(this.parts[id].built === 0
+					&& this.parts[id].blueprints === 0){
+					delete this.parts[id];
+				}
+				
+				//Update local
+				part.update(blueprints ? "blueprints" : "built" , change);
+				
+				this.setTimeout();
+			}
+			
+			setTimeout() {
+				this.cancel();
+				if(Object.keys(this.primes).length > 0 ||
+					Object.keys(this.parts).length > 0) {
+					this.promise = $timeout(() => {
+						this.save();
+					}, 10000);
+				}
+			}
+			
+			cancel() {
+				if(this.promise !== false) {
+					$timeout.cancel(this.promise);
+					this.promise = false;
+				}
+			}
+			
+			save() {
+				let primes = Object.keys(this.primes).map(id => ({
+					_id: id,
+					value: primeMap[id].mastered
+				}));
+				let parts = Object.keys(this.parts).map(id => ({
+					_id: id,
+					built: partMap[id].built,
+					blueprints: partMap[id].blueprints
+				}));
+				//Nothing to do
+				if(primes.length === 0 && parts.length === 0){
+					let promise = $q.defer();
+					promise.resolve(true);
+					return promise.promise;
+				}
+				let data = {};
+				if(primes.length > 0)
+					data.primes = primes;
+				if(parts.length > 0)
+					data.parts = parts;
+				this.history.push({
+					primes: this.primes,
+					parts: this.parts,
+					total: Object.keys(this.primes).length + Object.keys(this.parts).length
+				});
+				this.primes = {};
+				this.parts = {};
+				this.promise = false;
+				
+				if(false){
+					let temp = $q.defer();
+					temp.resolve(true);
+					return temp.promise;
+				}
+				return $http.post("/api/users", data).then(res => {
+					return true;
+				});
+			}
 		}
 		
 		$q.all([
