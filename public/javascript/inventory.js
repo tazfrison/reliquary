@@ -75,21 +75,27 @@ angular.module('inventory', ["data"])
 		});
 	}])
 	
-	.filter("partsfilter", function(){
-		return function(input, filters, sorts){
+	.filter("partsfilter", function() {
+		return function(input, filters, sorts) {
 			return input.filter(i => {
+				if(i.required == 0)
+					return false;
 				if(filters.name !== "" && -1 == i.name.toLowerCase().indexOf(filters.name.toLowerCase()))
 					return false;
 				if(filters.completion !== null){
 					let completion = (i.used + i.built + i.blueprints) / (i.required);
-					if(filters.completion === "" && completion <= 1)
-						return false;
+					if(filters.completion === "") {
+						if(i.requirements.length > 0)
+							return false;
+						if(completion <= 1)
+							return false;
+					}
 					else if(filters.completion === true && completion < 1)
 						return false;
 					else if(filters.completion === false && completion >= 1)
 						return false;
 				}
-				if(filters.vaulted !== null){
+				if(filters.vaulted !== null) {
 					let vaulted = !i.relics.some(r => !r.relic.vaulted);
 					if(filters.vaulted !== vaulted)
 						return false;
