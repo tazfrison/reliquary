@@ -31,18 +31,18 @@
 					</div>
 					<div class="ducats" title="Average ducats">
 						<div class="image"></div>
-						<div ng-repeat="ducats in completion().ducats track by $index">
+						<div ng-repeat="ducats in relic.completion.ducats track by $index">
 							{{ducats | number: 0}}
 						</div>
 					</div>
 					<div class="percent" title="Average chance to get something you need">
 						<div>%</div>
-						<div ng-repeat="item in completion().newPart track by $index">
-							{{item | number: 0}}
+						<div ng-repeat="item in relic.completion.newPart track by $index">
+							{{item * 100| number: 0}}
 						</div>
 					</div>
 				</div>
-				<div ng-style="{width: completion().length}" class="completion"></div>
+				<div ng-style="{width: relic.completion.percent}" class="completion"></div>
 				<div class="title">{{eras[relic.era]}} {{relic.name}} relic</div>
 			</div>
 		</div>

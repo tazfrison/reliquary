@@ -199,10 +199,19 @@ angular.module('data', [])
 				if(this[type] < -change)
 					change = -this[type];
 				
-				//Mark progress towards each prime that uses this part
 				if(type == "built" || type == "blueprints") {
+					//Mark progress towards each prime that uses this part
 					this.primes.forEach(prime => {
 						prime.adjust(this._id, change, type == "built");
+					});
+				}
+				
+				//Update each relic that contains this part
+				let temp = Math.min(this.used + this.built + this.blueprints + change, this.required)
+					- Math.min(this.used + this.built + this.blueprints, this.required);
+				if(temp !== 0) {
+					this.relics.forEach(relic => {
+						relic.relic.adjust(this._id, temp, relic.rarity);
 					});
 				}
 				
@@ -212,11 +221,9 @@ angular.module('data', [])
 				let next = Math.min(this.used + this.built, this.required);
 				
 				change = next - prev;
-				if(change == 0)
-					return;
 				
 				//Propagate progress
-				if(type == "built" || type == "used") {
+				if(change != 0 && (type == "built" || type == "used")) {
 					this.requirements.forEach(req => {
 						partMap[req.partId].update("used", change * req.quantity);
 					});
@@ -277,6 +284,14 @@ angular.module('data', [])
 			index() {
 				relics.push(this);
 				relicMap[this._id] = this;
+				this.completion = {
+					ducats: [0, 0, 0, 0],
+					newPart: [1, 1, 1, 1],
+					parts: {},
+					owned: 0,
+					required: 0,
+					percent: "0%"
+				}
 				this.rewards.forEach(rew => {
 					if(!rew.partId)
 						return;
@@ -284,6 +299,14 @@ angular.module('data', [])
 						rarity: rew.rarity,
 						relic: this
 					});
+					this.completion.required += partMap[rew.partId].required;
+					if(partMap[rew.partId].required == 0) {
+						this.completion.parts[rew.partId] = true;
+						chances.forEach((chance, i) => this.completion.newPart[i] -= chance[rew.rarity]);
+					}
+					else {
+						this.completion.parts[rew.partId] = false;
+					}
 				});
 			}
 			
@@ -323,8 +346,25 @@ angular.module('data', [])
 				});
 			}
 			
-			adjust(id, change) {
-				
+			adjust(id, change, rarity) {
+				let part = partMap[id];
+				this.completion.owned += change;
+				this.completion.percent = this.completion.owned / this.completion.required * 100 + "%";
+				let prev = this.completion.parts[id];
+				let next = part.required > part.used + part.built + part.blueprints;
+				for(let i = 0; i < 4; ++i) {
+					//Part was complete but now isn't
+					if(prev && !next) {
+						this.completion.ducats[i] -= chances[i][rarity] * part.ducats;
+						this.completion.newPart[i] += chances[i][rarity];
+					}
+					//Part is now complete
+					else if(next && !prev) {
+						this.completion.ducats[i] += chances[i][rarity] * part.ducats;
+						this.completion.newPart[i] -= chances[i][rarity];
+					}
+				}
+				this.completion.parts[id] = next;
 			}
 		}
 

@@ -51,7 +51,7 @@ angular.module('rewards', ["data", "relics"])
 			$scope.length = function(part){
 				if(!part)
 					return "0%";
-				let percent = 100 * Math.min(1, (part.owned + part.blueprints) / part.required) + "%";
+				let percent = 100 * Math.min(1, (part.used + part.built + part.blueprints) / part.required) + "%";
 				return percent;
 			};
 		}],

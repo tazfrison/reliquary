@@ -37,7 +37,7 @@ angular.module('relics', ["data"])
 		];
 		
 		DataService.service.then(service => {
-			$scope.completion = () => {
+			/*$scope.completion = () => {
 				let owned = 0;
 				let required = 0;
 				let ducats = [0, 0, 0, 0];
@@ -64,7 +64,7 @@ angular.module('relics', ["data"])
 					newPart: getNew,
 					length: (100 * owned / required) + "%"
 				}
-			};
+			};*/
 		});
 	}])
 	
@@ -76,7 +76,7 @@ angular.module('relics', ["data"])
 		$scope.length = function(part){
 			if(!part)
 				return "0%";
-			let percent = 100 * Math.min(1, (part.owned + part.blueprints) / part.required) + "%";
+			let percent = 100 * Math.min(1, (part.used + part.built + part.blueprints) / part.required) + "%";
 			return percent;
 		};
 	}])
