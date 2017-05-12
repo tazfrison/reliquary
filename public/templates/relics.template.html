@@ -18,7 +18,6 @@
 			<div class="relic"
 				ng-repeat="relic in relics | filter:{era:era} | orderBy: 'name'"
 				ng-click="selectRelic(relic)"
-				ng-controller="RelicCtrl"
 				ng-class="{active:selected._id == relic._id}"
 			>
 				<div class="data">
