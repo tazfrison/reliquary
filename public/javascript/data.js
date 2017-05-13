@@ -405,7 +405,7 @@ angular.module('data', [])
 				this.cancel();
 
 				//Resetting to saved value
-				if(this.primes[id] && this.primes[id] === value)
+				if(this.primes[id] !== undefined && this.primes[id] === value)
 					delete this.primes[id];
 				//Changed from saved value
 				else
