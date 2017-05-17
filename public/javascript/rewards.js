@@ -31,12 +31,7 @@ angular.module('rewards', ["data", "relics"])
 				}
 				
 				$scope.get = function(part){
-					let built = part.built, blueprints = part.blueprints;
-					if(part.hasBlueprint)
-						++blueprints;
-					else
-						++built;
-					inv.setPartCount(part._id, built, blueprints);
+					inv.setPartCount(part._id, 1, part.hasBlueprint);
 				}
 			});
 			
