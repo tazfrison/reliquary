@@ -85,9 +85,10 @@ angular.module('inventory', ["data"])
 				if(filters.completion !== null){
 					let completion = (i.used + i.built + i.blueprints) / (i.required);
 					if(filters.completion === "") {
-						completion = i.used + i.blueprints;
-						if(!i.hasBlueprint || i.requirements.length == 0 )
-							completion += i.built;
+						completion = i.used + i.built;
+						if(i.hasBlueprint && i.requirements.length > 0 && completion > i.required)
+							completion = i.required;
+						completion += i.blueprints
 						if(completion <= i.required)
 							return false;
 					}
