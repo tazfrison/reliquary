@@ -42,7 +42,9 @@
 					</div>
 				</div>
 				<div ng-style="{width: relic.completion.percent}" class="completion"></div>
-				<div class="title">{{eras[relic.era]}} {{relic.name}} relic</div>
+				<div class="title">{{eras[relic.era]}} {{relic.name}} relic
+					<div ng-if="relic.vaulted" class="vaulted">V</div>
+				</div>
 			</div>
 		</div>
 	</div>
