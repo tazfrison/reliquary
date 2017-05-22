@@ -9,6 +9,10 @@ body{
 	height: 100%
 }
 
+main>div>md-nav-bar>div.md-nav-bar{
+	border: none;
+}
+
 *{
 	box-sizing: border-box;
 	text-transform: uppercase;
