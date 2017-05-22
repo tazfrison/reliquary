@@ -1,27 +1,12 @@
 html{
-	background-color: #102030;
-	color: #FFFFFF;
 	height: 100%;
 }
 
 body{
+	background-color: #102030;
+	color: #FFFFFF;
 	margin: 0px;
 	height: 100%
-}
-
-main{
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	position: relative;
-}
-
-main>.nav{
-	height: 40px;
-}
-
-main>relics, main>primes, main>rewards{
-	flex: 1 1 80%;
 }
 
 *{

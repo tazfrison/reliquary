@@ -1,7 +1,14 @@
-angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory'])
+angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory', 'ngMaterial'])
+	.config($mdThemingProvider => {
+		$mdThemingProvider.theme("default")
+			.primaryPalette("blue")
+			.accentPalette("light-blue")
+			.dark();
+	})
 	.component("main", {
 		templateUrl: "templates/main.template.html",
 		controller: ["$scope", "DataService", function($scope, DataService){
+				$scope.currentNavItem = "rewards"
 				$scope.selected = [true, false, false, false];
 				$scope.select = function(index) {
 					$scope.selected.fill(false);
