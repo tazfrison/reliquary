@@ -1,8 +1,9 @@
 angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory', 'ngMaterial'])
 	.config($mdThemingProvider => {
 		$mdThemingProvider.theme("default")
-			.primaryPalette("blue")
+			.primaryPalette("teal")
 			.accentPalette("light-blue")
+//			.backgroundPalette("blue-grey")
 			.dark();
 	})
 	.component("main", {

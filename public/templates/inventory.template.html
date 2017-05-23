@@ -1,55 +1,57 @@
-<div class="controls">
-	<div class="filters">
-		<md-menu>
-			<md-button ng-click="$mdOpenMenu($event)">
-				Filters
+<md-toolbar class="controls md-primary">
+	<div class="md-toolbar-tools">
+		<div class="filters">
+			<md-menu>
+				<md-button ng-click="$mdOpenMenu($event)">
+					Filters
+				</md-button>
+				<md-menu-content>
+					<md-menu-item ng-repeat="filterOption in filterOptions">
+						<md-menu>
+							<md-button ng-click="$mdOpenMenu($event)">{{filterOption.title}}</md-button>
+							<md-menu-content>
+								<md-menu-item ng-repeat="option in filterOption.options">
+									<md-button
+										ng-class="filters[filterOption.filter] === option.value ? 'md-primary': ''"
+										ng-click="addFilter(filterOption.filter, option.value)"
+									>
+										{{option.title}}
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</md-menu-item>
+					<md-menu-item>
+						<md-menu>
+							<md-button ng-click="$mdOpenMenu($event)">Name</md-button>
+							<md-menu-content>
+								<md-menu-item>
+									<input ng-model="filters.name" />
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</md-menu-item>
+				</md-menu-content>
+			</md-menu>
+		</div>
+		<div class="sorts">
+			Sort By:
+			<md-button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
+				Name
+				<div class="direction"></div>
 			</md-button>
-			<md-menu-content>
-				<md-menu-item ng-repeat="filterOption in filterOptions">
-					<md-menu>
-						<md-button ng-click="$mdOpenMenu($event)">{{filterOption.title}}</md-button>
-						<md-menu-content>
-							<md-menu-item ng-repeat="option in filterOption.options">
-								<md-button
-									ng-class="filters[filterOption.filter] === option.value ? 'md-primary': ''"
-									ng-click="addFilter(filterOption.filter, option.value)"
-								>
-									{{option.title}}
-								</md-button>
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
-				</md-menu-item>
-				<md-menu-item>
-					<md-menu>
-						<md-button ng-click="$mdOpenMenu($event)">Name</md-button>
-						<md-menu-content>
-							<md-menu-item>
-								<input ng-model="filters.name" />
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>
+			<md-button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
+				Completion
+				<div class="direction"></div>
+			</md-button>
+			<md-button ng-click='toggle("ducats")' ng-class="{dsc:sorts.ducats===true, asc: sorts.ducats===false}">
+				Ducats
+				<div class="direction"></div>
+			</md-button>
+		</div>
 	</div>
-	<div class="sorts">
-		Sort By:
-		<md-button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
-			Name
-			<div class="direction"></div>
-		</md-button>
-		<md-button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
-			Completion
-			<div class="direction"></div>
-		</md-button>
-		<md-button ng-click='toggle("ducats")' ng-class="{dsc:sorts.ducats===true, asc: sorts.ducats===false}">
-			Ducats
-			<div class="direction"></div>
-		</md-button>
-	</div>
-</div>
-<div class="parts">
+</md-toolbar>
+<md-content class="parts">
 	<div class="part" 
 			ng-repeat="part in parts | partsfilter: filters: sorts"
 			ng-controller="InventoryCtrl">
@@ -88,4 +90,4 @@
 		</span>
 		<div class="completion" ng-style="{width: length(part)}"></div>
 	</div>
-</div>
+</md-content>

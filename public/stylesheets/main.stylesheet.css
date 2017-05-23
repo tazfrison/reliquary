@@ -1,16 +1,18 @@
-html{
-	height: 100%;
-}
-
-body{
-	background-color: #102030;
-	color: #FFFFFF;
-	margin: 0px;
-	height: 100%
-}
-
 main>div>md-nav-bar>div.md-nav-bar{
 	border: none;
+}
+
+main{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+main>*{
+	flex: 1 1 80%;
+}
+main>.nav{
+	flex: 0 0 48px;
 }
 
 *{
@@ -27,53 +29,4 @@ main>div>md-nav-bar>div.md-nav-bar{
 	background:rgba(0, 127, 127, 0.15);
 	position: absolute;
 	pointer-events: none;
-}
-
-ul.nav{
-	list-style: none;
-}
-
-.nav{
-	padding-left: 0px;
-	margin-bottom: 0px;
-	margin-top: 0px;
-	border-bottom: 1px solid #dddddd;
-}
-
-.nav:before, .nav:after{
-	display: table;
-	content: " ";
-}
-
-.nav:after{
-	clear: both;
-}
-
-.nav>li{
-	float: left;
-	margin-bottom: -1px;
-	position: relative;
-	display: block;
-}
-
-.nav>li:hover a{
-	background-color: #203040;
-	border-bottom-color: #dddddd
-}
-
-.nav>li a{
-	position: relative;
-	display: block;
-	padding: 10px 15px;
-	font-weight: bold;
-	text-decoration: none;
-	color: #FFFFFF;
-	margin-right: 2px;
-}
-
-.nav>li.active a{
-	cursor: default;
-	background-color: #203040;
-	border: 1px solid #dddddd;
-	border-bottom-color: transparent;
 }

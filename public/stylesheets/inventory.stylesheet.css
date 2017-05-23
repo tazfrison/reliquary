@@ -5,7 +5,6 @@ inventory{
 
 inventory>.controls{
 	flex: 0 0 48px;
-	background-color: #203040;
 	display: flex;
 	flex-direction: row;
 }
@@ -15,18 +14,18 @@ inventory>.controls>button{
 	flex: 0 0 50px;
 }
 
-inventory>.controls>.filters, primes>.controls>.sorts{
+inventory>.controls .filters, primes>.controls .sorts{
 	flex: 1 1 50%;
 }
 
-inventory>.controls>.sorts>button.asc>.direction{
+inventory>.controls .sorts>button.asc>.direction{
 	display: inline-block;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
 	border-bottom: 10px solid #000000;
 }
 
-inventory>.controls>.sorts>button.dsc>.direction{
+inventory>.controls .sorts>button.dsc>.direction{
 	display: inline-block;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
