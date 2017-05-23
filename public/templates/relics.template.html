@@ -1,22 +1,64 @@
-<ul class="nav">
-	<li ng-class="{active:era == 0}">
-		<a href="" ng-click="select(0)">LITH ERA</a>
-	</li>
-	<li ng-class="{active:era == 1}">
-		<a href="" ng-click="select(1)">MESO ERA</a>
-	</li>
-	<li ng-class="{active:era == 2}">
-		<a href="" ng-click="select(2)">NEO ERA</a>
-	</li>
-	<li ng-class="{active:era == 3}">
-		<a href="" ng-click="select(3)">AXI ERA</a>
-	</li>
-</ul>
+<md-toolbar class="controls">
+	<div class="md-toolbar-tools">
+		<md-menu>
+			<md-button ng-click="$mdOpenMenu($event)">
+				Filters
+			</md-button>
+			<md-menu-content>
+				<md-menu-item ng-repeat="filterOption in filterOptions">
+					<md-menu>
+						<md-button ng-click="$mdOpenMenu($event)">{{filterOption.title}}</md-button>
+						<md-menu-content>
+							<md-menu-item ng-repeat="option in filterOption.options">
+								<md-button
+									ng-class="filters[filterOption.filter] === option.value ? 'md-primary': ''"
+									ng-click="addFilter(filterOption.filter, option.value)"
+								>
+									{{option.title}}
+								</md-button>
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
+				</md-menu-item>
+				<md-menu-item>
+					<md-menu>
+						<md-button ng-click="$mdOpenMenu($event)">Name</md-button>
+						<md-menu-content>
+							<md-menu-item>
+								<input ng-model="filters.name" />
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<md-nav-bar md-selected-nav-item="era">
+			<md-nav-item ng-repeat="era in eras" md-nav-click="select($index)" name="{{$index}}">
+				{{era}} ERA
+			</md-nav-item>
+		</md-nav-bar>
+		<div class="sorts">
+			Sort By:
+			<md-button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
+				Name
+				<div class="direction"></div>
+			</md-button>
+			<md-button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
+				Completion
+				<div class="direction"></div>
+			</md-button>
+			<md-button ng-click='toggle("ducats")' ng-class="{dsc:sorts.ducats===true, asc: sorts.ducats===false}">
+				Ducats
+				<div class="direction"></div>
+			</md-button>
+		</div>
+	</div>
+</md-toolbar>
 <div style="display: flex">
 	<div class="reliclist">
 		<div>
 			<div class="relic"
-				ng-repeat="relic in relics | filter:{era:era} | orderBy: 'name'"
+				ng-repeat="relic in relics | filter:{era:era} | relicsfilter: filters: sorts"
 				ng-click="selectRelic(relic)"
 				ng-class="{active:selected._id == relic._id}"
 			>

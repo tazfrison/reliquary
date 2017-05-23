@@ -14,6 +14,56 @@ angular.module('relics', ["data"])
 				$scope.selected = false;
 			}
 			
+			$scope.filters = {
+				vaulted: null,
+				name: "",
+				completion: null
+			};
+			
+			$scope.filterOptions = [
+				{
+					title: "Vaulted",
+					filter: "vaulted",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Completion",
+					filter: "completion",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				}
+			];
+			
+			$scope.addFilter = (name, value) => {
+				$scope.filters[name] = value;
+			}
+			
+			$scope.sorts = {
+				name: true,
+				completion: null,
+				ducats: null
+			}
+			
+			$scope.toggle = sort => {
+				if(sort == "name")
+					$scope.sorts.name = !$scope.sorts.name;
+				else{
+					if($scope.sorts[sort] === true)
+						$scope.sorts[sort] = false;
+					else if($scope.sorts[sort] === false)
+						$scope.sorts[sort] = null;
+					else if($scope.sorts[sort] === null)
+						$scope.sorts[sort] = true;
+				}
+			}
+			
 			$scope.selectRelic = function(relic){
 				$scope.selected = relic;
 			}
@@ -35,3 +85,43 @@ angular.module('relics', ["data"])
 			return percent;
 		};
 	}])
+	
+	.filter("relicsfilter", function() {
+		return function(input, filters, sorts) {
+			return input.filter(i => {
+				if(filters.name !== "" && -1 == i.name.toLowerCase().indexOf(filters.name.toLowerCase()))
+					return false;
+				if(filters.completion !== null) {
+					if(filters.completion){
+						if(i.completion.owned < i.completion.required)
+							return false;
+					}
+					else if(!filters.completion) {
+						if(i.completion.owned === i.completion.required)
+							return false;
+					}
+				}
+				if(filters.vaulted !== null) {
+					if(filters.vaulted !== i.vaulted)
+						return false;
+				}
+				
+				return true;
+			}).sort((a, b) => {
+				if(sorts.ducats !== null) {
+					
+				}
+				if(sorts.completion !== null) {
+					let _a = Math.min(1, a.completion.owned / a.completion.required),
+						_b = Math.min(1, b.completion.owned / b.completion.required)
+					if(_a !== _b)
+					{
+						return sorts.completion ?
+							_b - _a :
+							_a - _b;
+					}
+				}
+				return sorts.name ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+			});
+		}
+	})

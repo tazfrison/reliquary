@@ -9,11 +9,6 @@ inventory>.controls{
 	flex-direction: row;
 }
 
-inventory>.controls>button{
-	display: inline-block;
-	flex: 0 0 50px;
-}
-
 inventory>.controls .filters, primes>.controls .sorts{
 	flex: 1 1 50%;
 }
