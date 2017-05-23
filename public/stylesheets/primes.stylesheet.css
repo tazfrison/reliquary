@@ -4,8 +4,7 @@ primes{
 }
 
 primes>.controls{
-	flex: 0 0 40px;
-	background-color: #203040;
+	flex: 0 0 48px;
 	display: flex;
 	flex-direction: row;
 }
@@ -15,18 +14,18 @@ primes>.controls>button{
 	flex: 0 0 50px;
 }
 
-primes>.controls>.filters, primes>.controls>.sorts{
+primes>.controls .filters, primes>.controls .sorts{
 	flex: 1 1 50%;
 }
 
-primes>.controls>.sorts>button.asc>.direction{
+primes>.controls .sorts>button.asc>.direction{
 	display: inline-block;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
 	border-bottom: 10px solid #000000;
 }
 
-primes>.controls>.sorts>button.dsc>.direction{
+primes>.controls .sorts>button.dsc>.direction{
 	display: inline-block;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;

@@ -5,19 +5,19 @@ angular.module("primes", ["data"])
 			$scope.mastered = angular.noop;
 			
 			$scope.types = [{
-					label: "Warframe",
+					title: "Warframe",
 					value: "warframe"
 				}, {
-					label: "Primary",
+					title: "Primary",
 					value: "primary"
 				}, {
-					label: "Secondary",
+					title: "Secondary",
 					value: "secondary"
 				}, {
-					label: "Melee",
+					title: "Melee",
 					value: "melee"
 				}, {
-					label: "Other",
+					title: "Other",
 					value: "other"
 				}];
 				
@@ -30,6 +30,45 @@ angular.module("primes", ["data"])
 				completion: null,
 				mastered: null
 			};
+			
+			$scope.filterOptions = [
+				{
+					title: "Vaulted",
+					filter: "vaulted",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Completion",
+					filter: "completion",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Mastered",
+					filter: "mastered",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Type",
+					filter: "type",
+					options: [{value: null, title: "Unfiltered"}].concat($scope.types)
+				}
+			];
+			
+			$scope.addFilter = (name, value) => {
+				$scope.filters[name] = value;
+			}
 			
 			$scope.sorts = {
 				name: true,

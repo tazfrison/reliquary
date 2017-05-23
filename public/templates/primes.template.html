@@ -39,46 +39,54 @@
 	</div>
 </script>
 
-<div class="controls">
-	<div class="filters">
-		<label>Vaulted
-			<select ng-model="filters.vaulted"
-				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
-				<option value=""></option>
-			</select>
-		</label>
-		<label>Completion
-			<select ng-model="filters.completion"
-				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
-				<option value=""></option>
-			</select>
-		</label>
-		<label>Mastered
-			<select ng-model="filters.mastered"
-				ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
-				<option value=""></option>
-			</select>
-		</label>
-		<label>Type
-			<select ng-model="filters.type" ng-options="type.value as type.label for type in types">
-				<option value=""></option>
-			</select>
-		</label>
-		<label>Name
-			<input ng-model="filters.name" />
-		</label>
+<md-toolbar class="controls md-primary">
+	<div class="md-toolbar-tools">
+		<div class="filters">
+			<md-menu>
+				<md-button ng-click="$mdOpenMenu($event)">
+					Filters
+				</md-button>
+				<md-menu-content>
+					<md-menu-item ng-repeat="filterOption in filterOptions">
+						<md-menu>
+							<md-button ng-click="$mdOpenMenu($event)">{{filterOption.title}}</md-button>
+							<md-menu-content>
+								<md-menu-item ng-repeat="option in filterOption.options">
+									<md-button
+										ng-class="filters[filterOption.filter] === option.value ? 'md-primary': ''"
+										ng-click="addFilter(filterOption.filter, option.value)"
+									>
+										{{option.title}}
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</md-menu-item>
+					<md-menu-item>
+						<md-menu>
+							<md-button ng-click="$mdOpenMenu($event)">Name</md-button>
+							<md-menu-content>
+								<md-menu-item>
+									<input ng-model="filters.name" />
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</md-menu-item>
+				</md-menu-content>
+			</md-menu>
+		</div>
+		<div class="sorts">
+			<md-button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
+				Name
+				<div class="direction"></div>
+			</md-button>
+			<md-button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
+				Completion
+				<div class="direction"></div>
+			</md-button>
+		</div>
 	</div>
-	<div class="sorts">
-		<button ng-click='toggle("name")' ng-class="{dsc:sorts.name===true, asc: sorts.name===false}">
-			Name
-			<div class="direction"></div>
-		</button>
-		<button ng-click='toggle("completion")' ng-class="{dsc:sorts.completion===true, asc: sorts.completion===false}">
-			Completion
-			<div class="direction"></div>
-		</button>
-	</div>
-</div>
+</md-toolbar>
 <div class="primes">
 	<div class="prime" 
 			ng-class="{active:selected[prime._id]}"
