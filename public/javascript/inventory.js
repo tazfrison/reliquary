@@ -1,34 +1,47 @@
-angular.module('inventory', ["data"])
+angular.module('inventory', ["data", 'ngMaterial'])
 	.component('inventory', {
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.parts = [];
-			
-			$scope.types = [{
-					label: "Warframe",
-					value: "warframe"
-				}, {
-					label: "Primary",
-					value: "primary"
-				}, {
-					label: "Secondary",
-					value: "secondary"
-				}, {
-					label: "Melee",
-					value: "melee"
-				}, {
-					label: "Other",
-					value: "other"
-				}];
 				
 			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
 			
 			$scope.filters = {
 				vaulted: null,
-				type: null,
 				name: "",
 				completion: null,
-				mastered: null
+				era: null
 			};
+			
+			$scope.filterOptions = [
+				{
+					title: "Vaulted",
+					filter: "vaulted",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Completion",
+					filter: "completion",
+					options: [
+						{value: null, title: "Unfiltered"},
+						{value: '', title: "Extra"},
+						{value: true, title: "Yes"},
+						{value: false, title: "No"}
+					]
+				},
+				{
+					title: "Era",
+					filter: "era",
+					options: [{value: null, title: "Unfiltered"}].concat($scope.eras.map((era, i) => ({value: i, title: era})))
+				}
+			];
+			
+			$scope.addFilter = (name, value) => {
+				$scope.filters[name] = value;
+			}
 			
 			$scope.sorts = {
 				name: true,
@@ -36,7 +49,7 @@ angular.module('inventory', ["data"])
 				ducats: null
 			}
 			
-			$scope.toggle = sort =>{
+			$scope.toggle = sort => {
 				if(sort == "name")
 					$scope.sorts.name = !$scope.sorts.name;
 				else{
@@ -49,12 +62,12 @@ angular.module('inventory', ["data"])
 				}
 			}
 
-			DataService.service.then(service =>{
+			DataService.service.then(service => {
 				$scope.parts = service.getParts();
 				let inv = service.getInventory();
 			});
 			
-			$scope.length = function(part){
+			$scope.length = function(part) {
 				if(!part)
 					return "0%";
 				let percent = 100 * Math.min(1, (part.used + part.built + part.blueprints) / part.required) + "%";
@@ -64,7 +77,7 @@ angular.module('inventory', ["data"])
 		templateUrl: "templates/inventory.template.html"
 	})
 	
-	.controller("InventoryCtrl", ["$scope", "DataService", function($scope, DataService){
+	.controller("InventoryCtrl", ["$scope", "DataService", function($scope, DataService) {
 		$scope.adjust = angular.noop;
 		
 		DataService.service.then(service =>{
@@ -82,7 +95,7 @@ angular.module('inventory', ["data"])
 					return false;
 				if(filters.name !== "" && -1 == i.name.toLowerCase().indexOf(filters.name.toLowerCase()))
 					return false;
-				if(filters.completion !== null){
+				if(filters.completion !== null) {
 					let completion = (i.used + i.built + i.blueprints) / (i.required);
 					if(filters.completion === "") {
 						completion = i.used + i.built;
@@ -102,9 +115,16 @@ angular.module('inventory', ["data"])
 					if(filters.vaulted !== vaulted)
 						return false;
 				}
+				if(filters.era !== null) {
+					if(!i.relics.some(relic => {
+						return relic.relic.era === filters.era;
+					}))
+						return false;
+				}
+				
 				return true;
-			}).sort((a, b) =>{
-				if(sorts.ducats !== null){
+			}).sort((a, b) => {
+				if(sorts.ducats !== null) {
 					if(a.ducats !== b.ducats)
 					{
 						return sorts.ducats ?
@@ -112,7 +132,7 @@ angular.module('inventory', ["data"])
 							a.ducats - b.ducats;
 					}
 				}
-				if(sorts.completion !== null){
+				if(sorts.completion !== null) {
 					let _a = Math.min(1, (a.used + a.built + a.blueprints) / a.required),
 						_b = Math.min(1, (b.used + b.built + b.blueprints) / b.required)
 					if(_a !== _b)
