@@ -1,0 +1,14 @@
+<div class="nav" layout="row" layout-align="space-between">
+	<md-nav-bar
+		md-selected-nav-item="currentNavItem"
+	>
+		<md-nav-item md-nav-click="select(0)" name="relics">
+			Relics
+		</md-nav-item>
+		<md-nav-item md-nav-click="select(1)" name="primes">
+			Primes
+		</md-nav-item>
+	</md-nav-bar>
+</div>
+<newrelic ng-show="selected[0]"></newrelic>
+<newprime ng-show="selected[1]"></newprime>
