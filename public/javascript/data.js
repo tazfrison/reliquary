@@ -95,12 +95,8 @@ angular.module('data', [])
 			_update(id, change) {
 				let req = this.requirements[id];
 				let prev = Math.min(req.owned, req.required);
-				this.requirements[id].owned += change;
-				let next = Math.min(req.owned, req.required);
-				change = next - prev;
-				if(change == 0)
-					return;
-				this.requirements.root.owned += change;
+				req.owned += change;
+				this.requirements.root.owned += Math.min(req.owned, req.required) - prev;
 				partMap[id].requirements.forEach(a => {
 					this._update(a.partId, change * a.quantity);
 				});
@@ -533,6 +529,12 @@ angular.module('data', [])
 			
 			//Track inventory and mastery
 			let inventory = new Inventory(data[3].data);
+			window.test = {
+				primes: primes,
+				parts: parts,
+				relics: relics,
+				inventory: inventory
+			};
 			
 			promise.resolve({
 				getPrimes: () => primes.slice(),
