@@ -1,13 +1,17 @@
 <script type="text/ng-template" id="PartDetail">
 	<div class="completion" ng-style="{width: width(prime, part)}"></div>
 	<span>x{{quantity}}</span>
-	<span>{{part.name}}</span>
+	<span ng-click="$emit('transfer', 'parts', part)">{{part.name}}</span>
 	<span class="ducats">
 		<div class="image"></div>
 		<span>{{part.ducats}}</span>
 	</span>
 	<span class="relics">
-		<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics">
+		<span
+			ng-class="'rarity' + reward.rarity"
+			ng-repeat="reward in part.relics"
+			ng-click="$emit('transfer', 'relics', reward.relic)"
+		>
 			{{eras[reward.relic.era]}} {{reward.relic.name}}
 		</span>
 	</span>
@@ -91,7 +95,8 @@
 	<div class="prime" 
 			ng-class="{active:selected[prime._id]}"
 			ng-repeat="prime in primes | primesfilter: filters: sorts"
-			ng-controller="PrimeCtrl">
+			ng-controller="PrimeCtrl"
+			id="{{prime._id}}">
 		<div class="completion" ng-style="{width: prime.requirements.root.width}"></div>
 		<div class="summary" ng-click="select(prime._id)">
 			{{prime.name}}

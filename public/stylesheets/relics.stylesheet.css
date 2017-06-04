@@ -3,6 +3,19 @@ relics{
 	flex-direction: column;
 }
 
+relics>.controls{
+	display: flex;
+	flex-direction: row;
+}
+
+relics>.controls .sorts, relics>.controls .filters{
+	flex: 1 1 40%;
+}
+
+relics>.controls .eras{
+	flex: 0 0 430px;
+}
+
 relics>.controls .sorts>button.asc>.direction{
 	display: inline-block;
 	border-left: 5px solid transparent;

@@ -1,5 +1,6 @@
 angular.module('relics', ["data"])
 	.component('relics', {
+		require: {root: "^main"},
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.era = 0;
 			$scope.relics = [];
@@ -12,6 +13,17 @@ angular.module('relics', ["data"])
 			$scope.select = function(index) {
 				$scope.era = index;
 				$scope.selected = false;
+			}
+			
+			$scope.selectRelic = function(relic){
+				$scope.select(relic.era);
+				$scope.selected = relic;
+			}
+
+			this.$onInit = () => this.root.selectRelic = $scope.selectRelic;
+			
+			$scope.selectPart = id => {
+				$scope.$emit("transfer", "parts", id);
 			}
 			
 			$scope.filters = {
@@ -63,12 +75,6 @@ angular.module('relics', ["data"])
 						$scope.sorts[sort] = true;
 				}
 			}
-			
-			$scope.selectRelic = function(relic){
-				$scope.selected = relic;
-			}
-			
-			$scope.min = Math.min;
 		}],
 		templateUrl: "templates/relics.template.html"
 	})

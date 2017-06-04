@@ -1,6 +1,7 @@
 angular.module('inventory', ["data", 'ngMaterial'])
 	.component('inventory', {
-		controller: ["$scope", "DataService", function($scope, DataService) {
+		require: {root: "^main"},
+		controller: ["$scope", "DataService", "$location", function($scope, DataService, $location) {
 			$scope.parts = [];
 				
 			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
@@ -11,6 +12,10 @@ angular.module('inventory', ["data", 'ngMaterial'])
 				completion: null,
 				era: null
 			};
+			
+			this.$onInit = () => this.root.selectPart = part => {
+				$location.hash(part._id);
+			}
 			
 			$scope.filterOptions = [
 				{

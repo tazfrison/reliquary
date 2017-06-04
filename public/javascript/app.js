@@ -22,6 +22,29 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory',
 					let user = service.getInventory();
 					$scope.login = user.valid;
 				});
+				let ctrl = this;
+				$scope.$on("transfer", (event, tab, data) => {
+					$scope.currentNavItem = tab;
+					switch(tab){
+						case "rewards":
+							$scope.select(0);
+							break;
+						case "relics":
+							$scope.select(1);
+							ctrl.selectRelic(data);
+							break;
+						case "primes":
+							$scope.select(2);
+							break;
+						case "parts":
+							$scope.select(3);
+							ctrl.selectPart(data);
+							break;
+						default:
+							return;
+							break;
+					}
+				});
 			}]
 	})
 	

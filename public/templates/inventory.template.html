@@ -54,7 +54,8 @@
 <md-content class="parts">
 	<div class="part" 
 			ng-repeat="part in parts | partsfilter: filters: sorts"
-			ng-controller="InventoryCtrl">
+			ng-controller="InventoryCtrl"
+			id="{{part._id}}">
 		<div class="image" bkg-img icon="{{part.icon}}" blueprint={{part.hasBlueprint}}></div>
 		<div class="name">
 			{{part.name}}
@@ -84,7 +85,7 @@
 			</table>
 		</div>
 		<span class="relics">
-			<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics">
+			<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics" ng-click="$emit('transfer', 'relics', reward.relic)">
 				{{eras[reward.relic.era]}} {{reward.relic.name}}
 			</span>
 		</span>
