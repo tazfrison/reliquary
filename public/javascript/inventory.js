@@ -1,7 +1,7 @@
 angular.module('inventory', ["data", 'ngMaterial'])
 	.component('inventory', {
 		require: {root: "^main"},
-		controller: ["$scope", "DataService", "$location", function($scope, DataService, $location) {
+		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.parts = [];
 				
 			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
@@ -14,7 +14,10 @@ angular.module('inventory', ["data", 'ngMaterial'])
 			};
 			
 			this.$onInit = () => this.root.selectPart = part => {
-				$location.hash(part._id);
+				setTimeout(() => {
+					let ele = document.getElementById(part._id);
+					ele.scrollIntoView(true);
+				});
 			}
 			
 			$scope.filterOptions = [
