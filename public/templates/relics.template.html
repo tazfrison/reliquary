@@ -104,7 +104,7 @@
 			<div>
 				<div class="relicreward" ng-class="'rarity' + reward.rarity" ng-repeat="reward in selected.rewards" ng-controller="RewardCtrl">
 					<div class="image" bkg-img icon="{{part.icon}}" blueprint="{{part.hasBlueprint}}"></div>
-					<span class="name" ng-click="$emit('transfer', 'parts', part)">
+					<span class="name" ng-click="part.name !== 'Forma' ? $emit('transfer', 'parts', part): ''">
 						{{part.name}}
 					</span>
 					<div ng-if="part.vaulted" class="vaulted">V</div>
