@@ -41,6 +41,7 @@
 			</div>
 			<div class="name">
 				{{reward.part.name}}
+				<div ng-if="reward.part.vaulted" class="vaulted">V</div>
 			</div>
 			<div ng-style="{width: length(reward.part)}" class="completion"></div>
 		</div>

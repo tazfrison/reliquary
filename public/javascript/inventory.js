@@ -119,8 +119,7 @@ angular.module('inventory', ["data", 'ngMaterial'])
 						return false;
 				}
 				if(filters.vaulted !== null) {
-					let vaulted = !i.relics.some(r => !r.relic.vaulted);
-					if(filters.vaulted !== vaulted)
+					if(filters.vaulted !== i.vaulted)
 						return false;
 				}
 				if(filters.era !== null) {

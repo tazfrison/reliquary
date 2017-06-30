@@ -55,6 +55,8 @@ angular.module('data', [])
 					};
 					this.requirements.root.required += quantity;
 					partMap[id].primes.push(this);
+					if(!this.vaulted)
+						partMap[id].vaulted = false;
 					partMap[id].required += quantity;
 					partMap[id].requirements.forEach(a => {
 						recurse(a.partId, quantity * a.quantity);
@@ -164,6 +166,9 @@ angular.module('data', [])
 				this.built = 0;
 				this.blueprints = 0;
 				this.used = 0;
+				this.vaulted = true;
+				if(this.name === "Forma")
+					this.vaulted = false;
 			}
 			
 			getData() {

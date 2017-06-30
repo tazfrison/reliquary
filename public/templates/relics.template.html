@@ -107,6 +107,7 @@
 					<span class="name" ng-click="$emit('transfer', 'parts', part)">
 						{{part.name}}
 					</span>
+					<div ng-if="part.vaulted" class="vaulted">V</div>
 					<div class="ducats">
 						<div class="image">
 						</div>
