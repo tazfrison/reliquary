@@ -5,11 +5,14 @@ angular.module('rewards', ["data", "relics"])
 			$scope.era = 0;
 
 			$scope.relics = [];
-			$scope.relic = null;
 
 			$scope.parts = [];
-			$scope.part = null;
 			$scope.selected = [];
+			
+			$scope.selectEra = index => {
+				$scope.era = index;
+				$scope.selected = [];
+			}
 
 			DataService.service.then(service => {
 				$scope.relics = service.getRelics();
@@ -17,17 +20,17 @@ angular.module('rewards', ["data", "relics"])
 				
 				let inv = service.getInventory();
 			
-				$scope.selectRelic = () => {
-					$scope.relic.rewards.forEach(rew=>{
+				$scope.selectRelic = relic => {
+					relic.rewards.forEach(rew=>{
 						let part = service.getPart(rew.partId);
 						if(-1 == $scope.selected.findIndex(r => r.part == part))
+						{
 							$scope.selected.push({
 								rarity: rew.rarity,
 								part: part
 							});
+						}
 					});
-					
-					$scope.relic = null;
 				}
 				
 				$scope.get = function(part){
@@ -35,13 +38,14 @@ angular.module('rewards', ["data", "relics"])
 				}
 			});
 			
-			$scope.selectPart = () => {
-				if(-1 == $scope.selected.findIndex(r => r.part == $scope.part))
+			$scope.selectPart = part => {
+				if(-1 == $scope.selected.findIndex(r => r.part == part))
+				{
 					$scope.selected.push({
-						rarity: $scope.part.relics.find(r => r.relic.era === $scope.era).rarity,
-						part: $scope.part
+						rarity: part.relics.find(r => r.relic.era === $scope.era).rarity,
+						part: part
 					});
-				$scope.part = null;
+				}
 			}
 			$scope.length = function(part){
 				if(!part)

@@ -1,29 +1,56 @@
-<div class="header">
-	<button ng-click="selected = []">Clear</button>
-	<label>Era
-		<select ng-model="era" ng-change="selected=[]" ng-options="eras.indexOf(era) as era for era in eras"></select>
-	</label>
-	<label>Add Relic:
-		<select
-			ng-model="relic"
-			ng-change="selectRelic()"
-			ng-options="relic as relic.name for relic in relics
-				| filter:{era : era}
-				| orderBy: 'name'"
-			>
-			<option value=""></option>
-		</select>
-	</label>
-	<label>Add Part:
-		<select
-			ng-model="part"
-			ng-change="selectPart()"
-			ng-options="part as part.name for part in parts | rewardsfilter: era"
-		>
-			<option value=""></option>
-		</select>
-	</label>
-</div>
+<md-toolbar class="controls">
+	<div class="md-toolbar-tools">
+		<button ng-click="selected = []">Clear</button>
+		<md-menu>
+			<md-button ng-click="$mdOpenMenu($event)">
+				Era: {{eras[era]}}
+			</md-button>
+			<md-menu-content>
+				<md-menu-item ng-repeat="filterEra in eras">
+					<md-button
+						ng-class="era === $index ? 'md-primary': ''"
+						ng-click="selectEra($index)"
+					>
+						{{filterEra}}
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<md-menu>
+			<md-button ng-click="$mdOpenMenu($event)">
+				Add Relic
+			</md-button>
+			<md-menu-content>
+				<md-menu-item ng-repeat="relic in relics
+					| filter:{era : era}
+					| orderBy: 'name'"
+				>
+					<md-button
+						ng-click="selectRelic(relic)"
+					>
+						{{relic.name}}
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		<md-menu>
+			<md-button ng-click="$mdOpenMenu($event)">
+				Add Part
+			</md-button>
+			<md-menu-content>
+				<md-menu-item ng-repeat="part in parts
+					| rewardsfilter: era"
+				>
+					<md-button
+						ng-click="selectPart(part)"
+					>
+						{{part.name}}
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</div>
+</md-toolbar>
 <div class="content">
 	<div class="rewards" ng-class="'rarity' + level" ng-repeat="level in [2, 1, 0]">
 		<div class="reward"
