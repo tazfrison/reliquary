@@ -450,6 +450,8 @@ angular.module('data', [])
 			
 			setTimeout() {
 				this.cancel();
+				if(!this.valid)
+					return;
 				if(Object.keys(this.primes).length > 0 ||
 					Object.keys(this.parts).length > 0) {
 					this.promise = $timeout(() => {
@@ -466,6 +468,8 @@ angular.module('data', [])
 			}
 			
 			save() {
+				if(!this.valid)
+					return;
 				let primes = Object.keys(this.primes).map(id => ({
 					_id: id,
 					value: primeMap[id].mastered
