@@ -207,19 +207,21 @@ angular.module('data', [])
 					});
 				}
 				
-				//Update each relic that contains this part
+				//Calculate if relics need updating
 				let temp = Math.min(this.used + this.built + this.blueprints + change, this.required)
 					- Math.min(this.used + this.built + this.blueprints, this.required);
-				if(temp !== 0) {
-					this.relics.forEach(relic => {
-						relic.relic.adjust(this._id, temp, relic.rarity);
-					});
-				}
 				
 				//Don't mark parts used beyond what's required
 				let prev = Math.min(this.used + this.built, this.required);
 				this[type] += change;
 				let next = Math.min(this.used + this.built, this.required);
+
+				//Update relics
+				if(temp !== 0) {
+					this.relics.forEach(relic => {
+						relic.relic.adjust(this._id, temp, relic.rarity);
+					});
+				}
 				
 				change = next - prev;
 				
@@ -302,6 +304,7 @@ angular.module('data', [])
 					});
 					this.completion.required += partMap[rew.partId].required;
 					if(partMap[rew.partId].required == 0) {
+						//Handle forma
 						this.completion.parts[rew.partId] = true;
 						chances.forEach((chance, i) => this.completion.newPart[i] -= chance[rew.rarity]);
 					}
@@ -352,7 +355,7 @@ angular.module('data', [])
 				this.completion.owned += change;
 				this.completion.percent = this.completion.owned / this.completion.required * 100 + "%";
 				let prev = this.completion.parts[id];
-				let next = part.required > part.used + part.built + part.blueprints;
+				let next = part.required <= part.used + part.built + part.blueprints;
 				for(let i = 0; i < 4; ++i) {
 					//Part was complete but now isn't
 					if(prev && !next) {
