@@ -17,9 +17,10 @@
 	</md-nav-bar>
 	<span>
 		<notifications></notifications>
-		<md-button>
-			<a ng-if="login===false" href="/login">Login</a>
-			<a ng-if="login===true" href="/logout">Log Out</a>
+		<md-button ng-disabled="login === null" ng-click="loginAction()">
+			<span ng-if="login===false">Login</span>
+			<span ng-if="login===true">Log Out</span>
+			<span ng-if="login===null">Loading...</span>
 		</md-button>
 	</span>
 </div>

@@ -8,7 +8,7 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory',
 	})
 	.component("main", {
 		templateUrl: "templates/main.template.html",
-		controller: ["$scope", "DataService", function($scope, DataService){
+		controller: ["$scope", "$window", "DataService", function($scope, $window, DataService){
 				$scope.currentNavItem = "rewards"
 				$scope.selected = [true, false, false, false];
 				$scope.select = function(index) {
@@ -17,6 +17,13 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory',
 				}
 				
 				$scope.login = null;
+				
+				$scope.loginAction = () => {
+					if($scope.login === true)
+						$window.location.href = "/logout";
+					else if($scope.login === false)
+						$window.location.href = "/login";
+				}
 				
 				DataService.service.then(function(service){
 					let user = service.getInventory();
