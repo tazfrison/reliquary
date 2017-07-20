@@ -35,9 +35,10 @@ angular.module('inventory', ["data", 'ngMaterial'])
 					filter: "completion",
 					options: [
 						{value: null, title: "Unfiltered"},
-						{value: '', title: "Extra"},
-						{value: true, title: "Yes"},
-						{value: false, title: "No"}
+						{value: 3, title: "Extra"},
+						{value: 2, title: "Yes"},
+						{value: 1, title: "Owned"},
+						{value: 0, title: "No"}
 					]
 				},
 				{
@@ -105,7 +106,7 @@ angular.module('inventory', ["data", 'ngMaterial'])
 					return false;
 				if(filters.completion !== null) {
 					let completion = (i.used + i.built + i.blueprints) / (i.required);
-					if(filters.completion === "") {
+					if(filters.completion === 3) {
 						completion = i.used + i.built;
 						if(i.hasBlueprint && i.requirements.length > 0 && completion > i.required)
 							completion = i.required;
@@ -113,9 +114,16 @@ angular.module('inventory', ["data", 'ngMaterial'])
 						if(completion <= i.required)
 							return false;
 					}
-					else if(filters.completion === true && completion < 1)
+					else if(filters.completion === 2 && completion < 1)
 						return false;
-					else if(filters.completion === false && completion >= 1)
+					else if(filters.completion === 1){
+						completion = i.blueprints;
+						if(!i.hasBlueprint || i.requirements.length === 0)
+							completion += i.built;
+						if(completion === 0)
+							return false;
+					}
+					else if(filters.completion === 0 && completion >= 1)
 						return false;
 				}
 				if(filters.vaulted !== null) {
