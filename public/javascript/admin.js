@@ -58,28 +58,32 @@ angular.module("admin", ["data", 'ngMaterial'])
 	
 	.component("newprime", {
 		templateUrl: "/templates/newPrime.template.html",
-		controller: ["$scope", "DataService", "$q", function($scope, DataService, $q) {
+		controller: ["$scope", "$q", "$http", "DataService", function($scope, $q, $http, DataService) {
 			//Presets
 			$scope.presets = ["Warframe", "Rifle/Shotgun", "Pistol/Sidearm", "Bow"];
-			$scope.icons = [
-				"barrel",
-				"receiver",
-				"stock",
-				"neuroptics",
-				"systems",
-				"chassis",
-				"blade",
-				"handle",
-				"link",
-				"grip"
-			]
+			$scope.icons = null;
 			
+			$scope.querySearch = text => {
+				let next = data => text ? data.filter(item => item.indexOf(text) === 0) : data
+				if($scope.icons === null){
+					return $http.get("/api/images").then(data => {
+						$scope.icons = data.data;
+						return next($scope.icons);
+					});
+				}
+				else{
+					let defer = $q.defer();
+					defer.resolve(next($scope.icons));
+					return defer.promise;
+				}
+			};
+
 			$scope.preset = {
 				name: "",
 				type: null,
 				parts: [],
 				vaulted: false
-			}
+			};
 			
 			$scope.updatePreset = function(){
 				$scope.preset.parts = [];

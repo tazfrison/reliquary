@@ -7,6 +7,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
 const fs = require("fs");
+const path = require("path");
 const crypto = require("crypto");
 
 const env = JSON.parse(fs.readFileSync("./environment.json", "utf8"));
@@ -122,7 +123,7 @@ MongoClient.connect(url, function(err, db) {
 			res.redirect("/");
 		else
 			res.render("admin");
-	})
+	});
 	
 	function update(collection){
 		return function(req, res){
@@ -162,7 +163,22 @@ MongoClient.connect(url, function(err, db) {
 				});
 			}
 		}
-	}
+	};
+	
+	app.get('/api/images', function(req, res){
+		let regex = /.+\.png$/;
+		fs.readdir(path.join(__dirname, "public", "images"), function(err, data){
+			if(data && data.length)
+			{
+				res.json(data
+					.filter(file => regex.test(file))
+					.map(file => file.slice(0, -4))
+				);
+			}
+			else
+				res.json(err);
+		});
+	});
 
 	app.get('/api/primes', function(req, res){
 		db.collection("primes").find({}).toArray(function(err, docs){

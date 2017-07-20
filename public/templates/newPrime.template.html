@@ -17,9 +17,18 @@
 	<label>Name: <input ng-model="part.name"></label>
 	<label>Ducats: <input ng-model="part.ducats"></label>
 	<label>Icon:
-		<select ng-options="icon as icon for icon in icons" ng-model="part.icon">
-			<option value=""></option>
-		</select>
+		<md-autocomplete
+			md-selected-item="part.icon"
+			md-search-text="searchText"
+			md-items="item in querySearch(searchText)"
+			placeholder="Icon">
+			<md-item-template>
+				<span md-highlight-text="searchText" md-highlight-flags="^i">{{item}}</span>
+			</md-item-template>
+			<md-not-found>
+				No matches.
+			</md-not-found>
+		</md-autocomplete>
 	</label>
 	<label>Has a blueprint? <input ng-model="part.hasBlueprint" type="checkbox"></label>
 	<div ng-repeat="req in part.requirements">
