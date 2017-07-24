@@ -1,16 +1,16 @@
-<a href="" ng-click="toggle()">
-	Notifications
-	<div class="progress"
-		ng-style="saving ? {width: '100%', transition: 'width 10s linear' } : {width: '0%', transition: 'width 0s linear'}"
-	></div>
-</a>
-<div class="dropdown" ng-show="overlay">
-	<div class="item" ng-show="pending">
-		Pending
-		<button ng-show="saving" ng-click="cancel()">Cancel</button>
-		<button ng-show="!saving" ng-click="save()">Save</button>
-	</div>
-	<div class="item" ng-repeat="event in events">
-		Saved {{event.total}} {{event.total == 1 ? 'part' : 'parts'}}
-	</div>
-</div>
+<md-menu>
+	<md-button ng-click="$mdOpenMenu($event)">
+		Notifications
+		<md-progress-linear md-mode="determinate" value="{{progress}}"></md-progress-linear>
+	</md-button>
+	<md-menu-content>
+		<div class="item" ng-show="pending">
+			Pending
+			<button ng-show="saving" ng-click="cancel()">Cancel</button>
+			<button ng-show="!saving" ng-click="save()">Save</button>
+		</div>
+		<div class="item" ng-repeat="event in events">
+			Saved {{event.total}} {{event.total == 1 ? 'part' : 'parts'}}
+		</div>
+	</md-menu-content>
+</md-menu>

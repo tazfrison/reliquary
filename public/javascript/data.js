@@ -567,21 +567,41 @@ angular.module('data', [])
 		};
 	}])
 	.component("notifications", {
-		controller: ["$scope", "DataService", function($scope, DataService){
+		controller: ["$scope", "$interval", "DataService", function($scope, $interval, DataService){
 			$scope.saving = false;
 			$scope.pending = false;
 			$scope.events = [];
+			$scope.progress = 0;
 			
-			DataService.service.then(service =>{
-			
+			DataService.service.then(service => {
+				let interval;
+				
+				let cancel = () => {
+					$interval.cancel(interval);
+					$scope.progress = 0;
+				}
+				
+				let start = () => {
+					cancel();
+					interval = $interval(() => {
+						++$scope.progress;
+					}, 100, 100);
+					interval.then(() => $scope.progress = 0, ()=>{});
+				};
+				
 				let update = () => {
 					$scope.saving = !!$scope._inv.promise;
+					if($scope._inv.promise){
+						start();
+						$scope._inv.promise.catch(() => cancel());
+					}
 					if(Object.keys($scope._inv.primes).length > 0 ||
 						Object.keys($scope._inv.parts).length > 0)
 						$scope.pending = true;
 					else
 						$scope.pending = false;
 				}
+				
 				$scope._inv = service.getInventory();
 				$scope.$watch("_inv.promise", update);
 				$scope.events = $scope._inv.history;
