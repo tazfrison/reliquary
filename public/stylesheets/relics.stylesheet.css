@@ -32,6 +32,7 @@ relics>.controls .sorts>button.dsc>.direction{
 
 relics>div{
 	flex: 1 1 80%;
+	min-height: 0px;
 }
 
 .relic{
