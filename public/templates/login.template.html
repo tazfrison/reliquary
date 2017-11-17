@@ -1,27 +1,23 @@
 <div class="error" ng-show="error">
 	{{error}}
 </div>
-<div class="inputs">
-	<div class="login">
-		<label>Username
-			<input ng-model="username" />
-		</label>
-		<br />
-		<label>Password
-			<input ng-model="password" type="password" />
-		</label>
-		<br />
-		<button ng-click="login()">Log In</button>
+<md-content>
+	<div>
+		<md-tabs>
+			<md-tab label="Login">
+				<form novalidate class="login">
+					<label>Username: <input type="text" ng-model="username" /></label><br />
+					<label>Password: <input type="password" ng-model="password" /></label><br />
+					<input type="submit" ng-click="login()" value="Log In" />
+				</form>
+			</md-tab>
+			<md-tab label="Create New User">
+				<form novalidate class="create">
+					<label>Username: <input type="text" ng-model="newusername" /></label><br />
+					<label>Password: <input type="password" ng-model="newpassword" /></label><br />
+					<input type="submit" ng-click="login()" value="New User" />
+				</form>
+			</md-tab>
+		</md-tabs>
 	</div>
-	<div class="create">
-		<label>Username
-			<input ng-model="newusername" />
-		</label>
-		<br />
-		<label>Password
-			<input ng-model="newpassword" type="password" />
-		</label>
-		<br />
-		<button ng-click="create()">New User</button>
-	</div>
-</div>
+</md-content>

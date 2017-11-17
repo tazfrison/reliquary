@@ -1,4 +1,11 @@
-angular.module('login', [])
+angular.module('login', ['ngMaterial'])
+		.config($mdThemingProvider => {
+		$mdThemingProvider.theme("default")
+			.primaryPalette("teal")
+			.accentPalette("light-blue")
+//			.backgroundPalette("blue-grey")
+			.dark();
+	})
 	.component("login", {
 		templateUrl: "templates/login.template.html",
 		controller: ["$scope", "$http", function($scope, $http){
