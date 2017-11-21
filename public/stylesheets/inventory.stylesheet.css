@@ -32,14 +32,19 @@ inventory>.parts{
 	overflow: auto;
 }
 
-.part{
-	display: flex;
-	flex-direction: row;
-	border: 1px solid;
-	position: relative;
+inventory>.parts>table{
+	border-collapse: collapse;
+	width: 100%;
 }
 
-.part>.image{
+inventory .part{
+	border: 1px solid;
+	background-image: url(/images/background.png);
+    background-size: 0% 100%;
+    background-repeat-x: no-repeat;
+}
+
+inventory .part>td>.image{
 	background-size: contain, 100% 100%;
 	background-repeat: no-repeat, no-repeat;
 	background-position: center center, center center;
@@ -47,7 +52,7 @@ inventory>.parts{
 	width: 80px;
 }
 
-.part .vaulted{
+inventory .part .vaulted{
 	font-style: bold;
 	background-color: #FF5555;
 	height: 20px;
@@ -57,14 +62,36 @@ inventory>.parts{
 	color: #000000;
 }
 
-.part .relics .rarity0{
+inventory .part table{
+	min-width: 175px;
+}
+
+inventory .part table td:last-child{
+	float: right;
+}
+
+inventory .part table td:last-child>span{
+	display: inline-block;
+	width: 20px;
+	text-align: center;
+	overflow: hidden;
+}
+
+inventory .part .relics .rarity0{
 	color: #BB5500;
 }
 
-.part .relics .rarity1{
+inventory .part .relics .rarity1{
 	color: #FFFFFF;
 }
 
-.part .relics .rarity2{
+inventory .part .relics .rarity2{
 	color: #AAAA22;
+}
+
+inventory .part .ducats>.image{
+	display: inline-block;
+	background-image: url("/images/ducat.png");
+	height: 26px;
+	width: 26px;
 }

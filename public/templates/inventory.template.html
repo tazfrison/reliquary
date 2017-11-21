@@ -52,44 +52,53 @@
 	</div>
 </md-toolbar>
 <md-content class="parts">
-	<div class="part" 
-			ng-repeat="part in parts | partsfilter: filters: sorts"
-			ng-controller="InventoryCtrl"
-			id="{{part._id}}">
-		<div class="image" bkg-img icon="{{part.icon}}" blueprint={{part.hasBlueprint}}></div>
-		<div class="name">
-			{{part.name}}
-		</div>
-		<div ng-if="part.vaulted" class="vaulted">V</div>
-		<span class="ducats">
-			<div class="image"></div>
-			<span>{{part.ducats}}</span>
-		</span>
-		<div class="owned">
-			<table>
-				<tr>
-					<td>Built:</td>
-					<td>
-						<button ng-click="adjust(false, false)" ng-disabled="part.built == 0">-</button>
-						<span>{{part.built}}</span>
-						<button ng-click="adjust(true, false)">+</button>
-					</td>
-				</tr>
-				<tr ng-if="part.hasBlueprint">
-					<td>Blueprints:</td>
-					<td>
-						<button ng-click="adjust(false, true)" ng-disabled="part.blueprints == 0">-</button>
-						<span>{{part.blueprints}}</span>
-						<button ng-click="adjust(true, true)">+</button>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<span class="relics">
-			<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics | orderBy: ['relic.era', 'relic.name']" ng-click="$emit('transfer', 'relics', reward.relic)">
-				{{eras[reward.relic.era]}} {{reward.relic.name}}
-			</span>
-		</span>
-		<div class="completion" ng-style="{width: length(part)}"></div>
-	</div>
+	<table>
+		<tr class="part" 
+				ng-repeat="part in parts | partsfilter: filters: sorts"
+				ng-controller="InventoryCtrl"
+				id="{{part._id}}"
+				ng-style="{'background-size': length(part)+' 100%'}"
+				>
+			<td>
+				<div class="image" bkg-img icon="{{part.icon}}" blueprint={{part.hasBlueprint}}></div>
+			</td>
+			<td>
+				<div class="name">
+					{{part.name}}
+				</div>
+				<span class="ducats">
+					<div class="image"></div>
+					<span>{{part.ducats}}</span>
+				</span>
+				<div ng-if="part.vaulted" class="vaulted">V</div>
+			</td>
+			<td class="owned">
+				<table>
+					<tr>
+						<td>Built:</td>
+						<td>
+							<button ng-click="adjust(false, false)" ng-disabled="part.built == 0">-</button>
+							<span>{{part.built}}</span>
+							<button ng-click="adjust(true, false)">+</button>
+						</td>
+					</tr>
+					<tr ng-if="part.hasBlueprint">
+						<td>Blueprints:</td>
+						<td>
+							<button ng-click="adjust(false, true)" ng-disabled="part.blueprints == 0">-</button>
+							<span>{{part.blueprints}}</span>
+							<button ng-click="adjust(true, true)">+</button>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<span class="relics">
+					<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics | orderBy: ['relic.era', 'relic.name']" ng-click="$emit('transfer', 'relics', reward.relic)">
+						{{eras[reward.relic.era]}} {{reward.relic.name}}
+					</span>
+				</span>
+			</td>
+		</tr>
+	</table
 </md-content>
