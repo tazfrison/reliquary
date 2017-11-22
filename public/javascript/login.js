@@ -21,8 +21,8 @@ angular.module('login', ['ngMaterial'])
 					username: $scope.username,
 					password: $scope.password
 				}).then(res => {
-					if(res.error)
-						$scope.error = res.error;
+					if(res.data.error)
+						$scope.error = res.data.error;
 					else
 						window.location = "/";
 				});
@@ -36,8 +36,8 @@ angular.module('login', ['ngMaterial'])
 					password: $scope.newpassword,
 					create: true
 				}).then(res => {
-					if(res.error)
-						$scope.error = res.error;
+					if(res.data.error)
+						$scope.error = res.data.error;
 					else
 						window.location = "/";
 				});
