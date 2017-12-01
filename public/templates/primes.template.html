@@ -47,13 +47,13 @@
 	<div class="md-toolbar-tools">
 		<div class="filters">
 			<md-menu>
-				<md-button ng-click="$mdOpenMenu($event)">
+				<md-button ng-click="$mdMenu.open()">
 					Filters
 				</md-button>
 				<md-menu-content>
 					<md-menu-item ng-repeat="filterOption in filterOptions">
 						<md-menu>
-							<md-button ng-click="$mdOpenMenu($event)">{{filterOption.title}}</md-button>
+							<md-button ng-click="$mdMenu.open()">{{filterOption.title}}</md-button>
 							<md-menu-content>
 								<md-menu-item ng-repeat="option in filterOption.options">
 									<md-button
@@ -68,7 +68,7 @@
 					</md-menu-item>
 					<md-menu-item>
 						<md-menu>
-							<md-button ng-click="$mdOpenMenu($event)">Name</md-button>
+							<md-button ng-click="$mdMenu.open()">Name</md-button>
 							<md-menu-content>
 								<md-menu-item>
 									<input ng-model="filters.name" />

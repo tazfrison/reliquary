@@ -2,7 +2,7 @@
 	<div class="md-toolbar-tools">
 		<md-button ng-click="selected = []">Clear</md-button>
 		<md-menu>
-			<md-button ng-click="$mdOpenMenu($event)">
+			<md-button ng-click="$mdMenu.open()">
 				Era: {{eras[era]}}
 			</md-button>
 			<md-menu-content>
@@ -17,7 +17,7 @@
 			</md-menu-content>
 		</md-menu>
 		<md-menu>
-			<md-button ng-click="$mdOpenMenu($event)">
+			<md-button ng-click="$mdMenu.open()">
 				Add Relic
 			</md-button>
 			<md-menu-content>
@@ -34,7 +34,7 @@
 			</md-menu-content>
 		</md-menu>
 		<md-menu>
-			<md-button ng-click="$mdOpenMenu($event)">
+			<md-button ng-click="$mdMenu.open()">
 				Add Part
 			</md-button>
 			<md-menu-content>
