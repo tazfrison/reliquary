@@ -563,7 +563,13 @@ angular.module('data', [])
 			service: promise.promise,
 			Prime: Prime,
 			Part: Part,
-			Relic: Relic
+			Relic: Relic,
+			eras: [
+				"Lith",
+				"Meso",
+				"Neo",
+				"Axi"
+			]
 		};
 	}])
 	.component("notifications", {

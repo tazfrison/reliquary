@@ -94,9 +94,8 @@
 			</td>
 			<td>
 				<span class="relics">
-					<span ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics | orderBy: ['relic.era', 'relic.name']" ng-click="$emit('transfer', 'relics', reward.relic)">
-						{{eras[reward.relic.era]}} {{reward.relic.name}}
-					</span>
+					<relic-stub ng-class="'rarity' + reward.rarity" ng-repeat="reward in part.relics | orderBy: ['relic.era', 'relic.name']" relic="reward.relic">
+					</relic-stub>
 				</span>
 			</td>
 		</tr>

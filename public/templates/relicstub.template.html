@@ -1,0 +1,22 @@
+<md-menu>
+	<span ng-mouseenter="$mdMenu.open()" ng-class="($ctrl.relic.vaulted ? 'vaulted ' : '')">
+		{{eras[$ctrl.relic.era]}} {{$ctrl.relic.name}}
+	</span>
+	<md-menu-content
+		ng-mouseleave="$mdMenu.close()"
+		md-colors="{background: 'default-background-hue-1'}"
+		class="relicstubmenu">
+		<div aria-label="Go to relic" ng-click="$emit('transfer', 'relics', $ctrl.relic)">
+			<span>
+				{{eras[$ctrl.relic.era]}} {{$ctrl.relic.name}}
+				<span ng-if="$ctrl.relic.vaulted" class="vaulted">V</span>
+			</span>
+			<div class="reward" ng-class="(parts[reward.partId].vaulted ? 'vaulted ' : '') + 'rarity' + reward.rarity" ng-repeat="reward in $ctrl.relic.rewards">
+				<span class="name">
+					{{parts[reward.partId].name}}
+				</span>
+				<div ng-style="{width: length(parts[reward.partId])}" class="completion"></div>
+			</div>
+		</div>
+	</md-menu-content>
+</md-menu>

@@ -52,7 +52,7 @@ inventory .part>td>.image{
 	width: 80px;
 }
 
-inventory .part .vaulted{
+inventory .part>td>.vaulted{
 	font-style: bold;
 	background-color: #FF5555;
 	height: 20px;
@@ -77,15 +77,15 @@ inventory .part table td:last-child>span{
 	overflow: hidden;
 }
 
-inventory .part .relics .rarity0{
+inventory .part .relics relic-stub.rarity0{
 	color: #BB5500;
 }
 
-inventory .part .relics .rarity1{
+inventory .part .relics relic-stub.rarity1{
 	color: #FFFFFF;
 }
 
-inventory .part .relics .rarity2{
+inventory .part .relics relic-stub.rarity2{
 	color: #AAAA22;
 }
 

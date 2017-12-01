@@ -1,4 +1,4 @@
-angular.module('inventory', ["data", 'ngMaterial'])
+angular.module('inventory', ["data", 'ngMaterial', 'relicStub'])
 	.component('inventory', {
 		require: {root: "^main"},
 		controller: ["$scope", "DataService", function($scope, DataService) {

@@ -19,7 +19,7 @@ rewards .rewards{
 	flex-wrap: wrap;
 }
 
-.reward{
+rewards .reward{
 	position: relative;
 	height: 150px;
 	width: 150px;
@@ -31,19 +31,19 @@ rewards .rewards{
 	border: 2px solid #304050;
 }
 
-.reward>*{
+rewards .reward>*{
 	z-index: 2;
 }
 
-.reward>.completion{
+rewards .reward>.completion{
 	z-index: 0;
 }
 
-.reward>.image{
+rewards .reward>.image{
 	z-index: 1;
 }
 
-.reward>.details{
+rewards .reward>.details{
 	height: 40px;
 	position: absolute;
 	top: 0px;
@@ -56,7 +56,7 @@ rewards .rewards{
 	background: rgba(0, 0, 0, 0.3);
 }
 
-.reward .name{
+rewards .reward .name{
 	height: 40px;
 	background: rgba(0, 0, 0, 0.3);
 	position: absolute;
@@ -65,7 +65,7 @@ rewards .rewards{
 	width: 100%;
 }
 
-.reward .name .vaulted{
+rewards .reward .name .vaulted{
 	font-style: bold;
 	background-color: #FF5555;
 	height: 20px;
@@ -75,21 +75,21 @@ rewards .rewards{
 	color: #000000;
 }
 
-.reward div.ducats{
+rewards .reward div.ducats{
 	flex: 0 0 26px;
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
 }
 
-.reward div.ducats>.image{
+rewards .reward div.ducats>.image{
 	display: inline-block;
 	background-image: url("/images/ducat.png");
 	height: 26px;
 	width: 26px;
 }
 
-.reward>.image{
+rewards .reward>.image{
 	background-size: contain, 100% 100%;
 	background-repeat: no-repeat, no-repeat;
 	background-position: center center, center center;
@@ -97,18 +97,18 @@ rewards .rewards{
 	width: 100%;
 }
 
-.reward>.details>button{
+rewards .reward>.details>button{
 	width: 30px;
 }
 
-.rarity0>.reward{
+rewards .rarity0>.reward{
 	color: #BB5500;
 }
 
-.rarity1>.reward{
+rewards .rarity1>.reward{
 	color: #FFFFFF;
 }
 
-.rarity2>.reward{
+rewards .rarity2>.reward{
 	color: #AAAA22;
 }

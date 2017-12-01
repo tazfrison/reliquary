@@ -4,7 +4,7 @@ angular.module('relics', ["data"])
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.era = 0;
 			$scope.relics = [];
-			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
+			$scope.eras = DataService.eras;
 			DataService.service.then(service => {
 				$scope.relics = service.getRelics();
 			});

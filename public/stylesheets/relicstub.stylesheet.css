@@ -1,0 +1,70 @@
+relic-stub > md-menu > span.vaulted{
+	border: 1px solid #FF5555;
+	display: inline-block;
+}
+
+.relicstubmenu {
+	padding: 0px;
+}
+
+.relicstubmenu .reward{
+	position: relative;
+	padding: 10px 5px;
+	margin: 3px 0px;
+	display: flex;
+	border: 2px solid;
+}
+
+.relicstubmenu .reward.vaulted{
+	border-color: #FF5555;
+} 
+
+.relicstubmenu .reward>*{
+	z-index: 1;
+}
+
+.relicstubmenu .reward>.completion{
+	z-index: 0;
+}
+
+.relicstubmenu .reward span.name{
+	display: inline-block;
+}
+
+.relicstubmenu .reward div.ducats{
+	width: 26px;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.relicstubmenu .reward>div.ducats>.image{
+	display: inline-block;
+	background-image: url("/images/ducat.png");
+	height: 26px;
+	width: 26px;
+}
+
+.relicstubmenu .reward>.image{
+	display: inline-block;
+	height: 50px;
+	border: 2px solid #304050;
+	width: 80px;
+	margin:	0px 10px;
+	background-size: contain, 100% 100%;
+	background-repeat: no-repeat, no-repeat;
+	background-position: center center, center center;
+	
+}
+
+.relicstubmenu .reward.rarity0{
+	color: #BB5500;
+}
+
+.relicstubmenu .reward.rarity1{
+	color: #FFFFFF;
+}
+
+.relicstubmenu .reward.rarity2{
+	color: #AAAA22;
+}
