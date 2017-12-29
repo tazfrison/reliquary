@@ -24,7 +24,10 @@
 		</md-button>
 	</span>
 </div>
-<rewards ng-show="selected[0]"></rewards>
-<relics ng-show="selected[1]"></relics>
-<primes ng-show="selected[2]"></primes>
-<inventory ng-show="selected[3]"></inventory>
+<rewards index="0" ng-show="selected[0]"></rewards>
+<relics index="1" ng-if="init[1]" ng-show="selected[1]"></relics>
+<primes index="2" ng-if="init[2]" ng-show="selected[2]"></primes>
+<inventory index="3" ng-if="init[3]" ng-show="selected[3]"></inventory>
+<div ng-show="loading" class="loading">
+	<md-progress-circular ng-disabled="!loading" md-mode="indeterminate"></md-progress-circular>
+</div>

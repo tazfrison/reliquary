@@ -1,6 +1,20 @@
 angular.module("primes", ["data"])
 	.component('primes', {
+		require: {root: "^main"},
+		bindings: {
+			index: "<"
+		},
 		controller: ["$scope", "DataService", function($scope, DataService) {
+			this.$onInit = () => {
+				let i = 0;
+				let interval = setInterval(() => {
+					if(++i >= 2){
+						clearInterval(interval);
+						$scope.$emit("ready", this.index);
+					}
+				}, 5);
+			}
+
 			$scope.primes = [];
 			$scope.mastered = angular.noop;
 			

@@ -8,15 +8,39 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory',
 	})
 	.component("main", {
 		templateUrl: "templates/main.template.html",
-		controller: ["$scope", "$window", "DataService", function($scope, $window, DataService){
+		controller: ["$scope", "$window", "$timeout", "DataService", function($scope, $window, $timeout, DataService){
 				$scope.currentNavItem = "rewards"
 				$scope.selected = [true, false, false, false];
+				$scope.init = [true, false, false, false];
 				$scope.select = function(index) {
-					$scope.selected.fill(false);
-					$scope.selected[index] = true;
+					if($scope.selected[index])
+						return;
+					$scope.loading = true;
+					if(!$scope.init[index]){
+						$scope.init[index] = true;
+						return;
+					}
+					
+					$timeout(() => {
+						$scope.selected.fill(false);
+						$scope.selected[index] = true;
+						
+						$timeout(() => {
+							$scope.loading = false;
+						});
+					});
 				}
 				
+				$scope.$on("ready", (ev, index) => {
+					$scope.selected.fill(false);
+					$scope.selected[index] = true;
+					$timeout(() => {
+						$scope.loading = false;
+					});
+				});
+				
 				$scope.login = null;
+				$scope.loading = true;
 				
 				$scope.loginAction = () => {
 					if($scope.login === true)
@@ -28,6 +52,7 @@ angular.module('reliquary', ['relics', 'primes', 'data', 'rewards', 'inventory',
 				DataService.service.then(function(service){
 					let user = service.getInventory();
 					$scope.login = user.valid;
+					$scope.loading = false;
 				});
 				let ctrl = this;
 				$scope.$on("transfer", (event, tab, data) => {

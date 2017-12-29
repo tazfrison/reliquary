@@ -1,9 +1,12 @@
 angular.module('inventory', ["data", 'ngMaterial', 'relicStub'])
 	.component('inventory', {
 		require: {root: "^main"},
+		bindings: {
+			index: "<"
+		},
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.parts = [];
-				
+			
 			$scope.eras = ["Lith", "Meso", "Neo", "Axi"];
 			
 			$scope.filters = {
@@ -13,11 +16,20 @@ angular.module('inventory', ["data", 'ngMaterial', 'relicStub'])
 				era: null
 			};
 			
-			this.$onInit = () => this.root.selectPart = part => {
-				setTimeout(() => {
-					let ele = document.getElementById(part._id);
-					ele.scrollIntoView(true);
-				});
+			this.$onInit = () => {
+				let i = 0;
+				let interval = setInterval(() => {
+					if(++i >= 3){
+						clearInterval(interval);
+						$scope.$emit("ready", this.index);
+					}
+				}, 5);
+				this.root.selectPart = part => {
+					setTimeout(() => {
+						let ele = document.getElementById(part._id);
+						ele.scrollIntoView(true);
+					});
+				}
 			}
 			
 			$scope.filterOptions = [
@@ -73,7 +85,6 @@ angular.module('inventory', ["data", 'ngMaterial', 'relicStub'])
 
 			DataService.service.then(service => {
 				$scope.parts = service.getParts();
-				let inv = service.getInventory();
 			});
 			
 			$scope.length = function(part) {

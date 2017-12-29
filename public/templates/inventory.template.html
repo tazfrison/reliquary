@@ -54,7 +54,7 @@
 <md-content class="parts">
 	<table>
 		<tr class="part" 
-				ng-repeat="part in parts | partsfilter: filters: sorts"
+				ng-repeat="part in parts | partsfilter: filters: sorts track by part._id"
 				ng-controller="InventoryCtrl"
 				id="{{part._id}}"
 				ng-style="{'background-size': length(part)+' 100%'}"

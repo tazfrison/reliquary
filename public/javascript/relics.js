@@ -1,6 +1,9 @@
 angular.module('relics', ["data"])
 	.component('relics', {
 		require: {root: "^main"},
+		bindings: {
+			index: "<"
+		},
 		controller: ["$scope", "DataService", function($scope, DataService) {
 			$scope.era = 0;
 			$scope.relics = [];
@@ -20,7 +23,16 @@ angular.module('relics', ["data"])
 				$scope.selected = relic;
 			}
 
-			this.$onInit = () => this.root.selectRelic = $scope.selectRelic;
+			this.$onInit = () => {
+				let i = 0;
+				let interval = setInterval(() => {
+					if(++i >= 2){
+						clearInterval(interval);
+						$scope.$emit("ready", this.index);
+					}
+				}, 5);
+				this.root.selectRelic = $scope.selectRelic;
+			}
 			
 			$scope.selectPart = id => {
 				$scope.$emit("transfer", "parts", id);
